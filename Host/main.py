@@ -2,7 +2,7 @@ from datetime import datetime
 import queue
 import threading 
 import zmq
-import pandas
+#import pandas
 import time
 
 __author__ = "Joshua Vondracek"
