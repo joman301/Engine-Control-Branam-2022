@@ -83,7 +83,7 @@ def send_logs():
     global LOGGING
     while(True):
         LOGGING.wait()
-        #threading.Timer(0.1, send_logs).start()
+        threading.Timer(0.1, send_logs).start()
         message = 'log%' + sensors.read_all()
         time.sleep(0.05)
         SEND_INFO.put(message)
