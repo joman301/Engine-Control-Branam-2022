@@ -1,17 +1,45 @@
-import zmq
+import threading
 
-context = zmq.Context()
+import commands as cmd
+import message as msg
 
-#  Socket to talk to server
-print("Connecting to hello world server…")
-socket = context.socket(zmq.REQ)
-socket.connect("tcp://localhost:5555")
+__author__ = "Aidan Cantu"
 
-#  Do 10 requests, waiting each time for a response
-for request in range(10):
-    print("Sending request %s …" % request)
-    socket.send(b"Hello")
+def execute():
+    '''Thread which executes all commands'''
+    while(True):
+        user_command = msg.get_cmd()
+        user_command = cmd.parse(user_command)
+        if len(user_command) == 0:
+            msg.cmd_ready()
+            continue
+        if user_command[0].lower() == "stop":
+            msg.stop()
+            for x in threading.enumerate():
+                if x.getName()=="command":
+                    x.join()
+            msg.tell("all commands exited")
+            msg.resume()
+            msg.cmd_ready()
+        else:
+            x = threading.Thread(name='command', target=cmd.exe, args = [user_command])
+            x.start()
 
-    #  Get the reply.
-    message = socket.recv()
-    print("Received reply %s [ %s ]" % (request, message))
+def main():
+
+    # Begin listening for and sending requests over socket
+    sender = threading.Thread(name='sender', target=msg.sender)
+    sender.start()
+
+    receiver = threading.Thread(name='receiver', target=msg.receiver)
+    receiver.start()
+
+    logger = threading.Thread(name='logger', target=msg.send_logs)
+    logger.start()
+
+    executer = threading.Thread(name='executer', target=execute)
+    executer.start()
+            
+
+if __name__ == "__main__":
+    main()
