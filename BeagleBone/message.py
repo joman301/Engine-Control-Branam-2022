@@ -12,9 +12,9 @@ __author__ = "Aidan Cantu"
 # ZMQ setup
 context = zmq.Context()
 send_socket = context.socket(zmq.PUSH)
-send_socket.bind("tcp://*:5555")
+send_socket.bind("tcp://192.168.7.2:5555")
 receive_socket = context.socket(zmq.PULL)
-receive_socket.bind("tcp://*:5556")
+receive_socket.bind("tcp://192.168.7.2:5556")
 
 # Queue of all data that will later be sent to the host
 SEND_INFO = queue.Queue()
@@ -75,10 +75,10 @@ def tell(message = ""):
     message = "msg%" + message
     USER_IO_AVAILABLE.wait()
     SEND_INFO.put(message)
-
+'''
 def send_logs():
-    '''thread that reads sensor data and sends it to the
-    host over the socket'''
+    thread that reads sensor data and sends it to the
+    host over the socket
     global SEND_INFO
     global LOGGING
     while(True):
@@ -87,6 +87,7 @@ def send_logs():
         message = 'log%' + sensors.read_all()
         time.sleep(0.05)
         SEND_INFO.put(message)
+'''
 
 def get_cmd():
     '''waits until user input is allowed, then sets server status
