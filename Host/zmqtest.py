@@ -5,7 +5,7 @@ context = zmq.Context()
 #  Socket to talk to server
 print("Connecting to hello world server…")
 socket = context.socket(zmq.REQ)
-socket.connect("tcp://192.168.7.1:5555")
+socket.connect("tcp://192.168.7.3:5555")
 
 #  Do 10 requests, waiting each time for a response
 for request in range(10):
