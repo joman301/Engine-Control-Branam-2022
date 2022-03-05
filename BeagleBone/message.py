@@ -5,7 +5,7 @@ import time
 
 import zmq
 
-#import sensors
+import sensors
 
 __author__ = "Aidan Cantu"
 
@@ -75,10 +75,10 @@ def tell(message = ""):
     message = "msg%" + message
     USER_IO_AVAILABLE.wait()
     SEND_INFO.put(message)
-'''
+
 def send_logs():
-    thread that reads sensor data and sends it to the
-    host over the socket
+    '''thread that reads sensor data and sends it to the
+    host over the socket'''
     global SEND_INFO
     global LOGGING
     while(True):
@@ -87,7 +87,7 @@ def send_logs():
         message = 'log%' + sensors.read_all()
         time.sleep(0.05)
         SEND_INFO.put(message)
-'''
+
 
 def get_cmd():
     '''waits until user input is allowed, then sets server status
