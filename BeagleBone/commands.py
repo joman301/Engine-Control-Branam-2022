@@ -2,7 +2,7 @@
 can execute'''
 from enum import Enum
 
-from pygtkcompat import enable_webkit
+#from pygtkcompat import enable_webkit
 import message as msg
 import time
 import os
