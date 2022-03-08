@@ -219,10 +219,10 @@ def ignition():
             msg.tell("{}".format(10-sec))
             sleep(1)
         ten_percent_open()
-        sleep(2)
-        full_flow_open()
         mainfuel_open()
         mainlox_open()
+        sleep(2)
+        full_flow_open()
         ignitor_on()
         msg.tell("BOOM")
     else:
@@ -254,8 +254,8 @@ def reset():
 
 
 def a():
-    print("ABORT")
-    msg.tell("SYSTEM ABORTED")
+    print("USER ABORT")
+    msg.tell("SYSTEM ABORTED VIA USER INPUT")
 
 def SYS():
     print("Work in progress")
@@ -329,7 +329,8 @@ commands = {
 
     "a": [a, 1],
     "SYS": [SYS, 1],
-    "reset": [reset, 1]
+    "reset": [reset, 1],
+    "quit": [quit, 1]
 
 }
 
