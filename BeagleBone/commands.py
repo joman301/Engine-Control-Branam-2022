@@ -233,15 +233,24 @@ def ignitor_on():
     GPIO.output(IGNITION_PIN, GPIO.HIGH)
     msg.tell("Turned the ignitor pin on")
 
-def ignitor_on():
+def ignitor_off():
     print("Turning the ignitor pin on")
     GPIO.output(IGNITION_PIN, GPIO.LOW)
     msg.tell("Turned the ignitor pin on")
 
 def reset():
     if msg.demand("Are you sure you want to reset the system? [yes/no]") == 'yes':
-        msg.tell("RESETTING THE SYSTEM: CLOSING ALL VALVES")
+        print("RESETTING THE SYSTEM: CLOSING ALL VALVES - TURNING OFF IGNITOR")
+        msg.tell("RESETTING THE SYSTEM: CLOSING ALL VALVES - TURNING OFF IGNITOR")
         ten_percent_close()
+        full_flow_close()
+        mainfuel_close()
+        mainlox_close()
+        ventfuel_close()
+        ventlox_close()
+        ignitor_off()
+    else:
+        msg.tell("Cancelled the reset of the system")
 
 
 def a():
@@ -312,6 +321,12 @@ commands = {
     "mainfuel_close": [mainfuel_close, 1],
 
     "ignition": [ignition, 1],
+    "ignitor_on": [ignitor_on, 1],
+    "ignitor_off": [ignitor_off, 1],
+
+    "full_abort": [full_abort, 1],
+    "engine_abort": [engine_abort, 1],
+
     "a": [a, 1],
     "SYS": [SYS, 1],
     "reset": [reset, 1]
