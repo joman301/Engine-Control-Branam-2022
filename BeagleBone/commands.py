@@ -221,9 +221,9 @@ def ignition():
         ten_percent_open()
         mainfuel_open()
         mainlox_open()
+        ignitor_on()
         sleep(2)
         full_flow_open()
-        ignitor_on()
         msg.tell("BOOM")
     else:
         msg.tell("Aborted the ignition procedure")
