@@ -7,6 +7,7 @@ import message as msg
 import time
 import os
 from time import sleep
+import Adafruit_BBIO.GPIO as GPIO
 
 #import board
 #from adafruit_motor import stepper
@@ -19,6 +20,10 @@ __author__ = "Aidan Cantu"
 LAST_COMMAND = []
 LOX_MOTOR_POS_DEG = 0
 KER_MOTOR_POS_DEG = 0
+
+led_test = "P9_11"
+GPIO.setup(led_test, GPIO.OUT)
+GPIO.output(led_test, GPIO.LOW)
 
 # stepper1 --> M1, M2 terminals
 # stepper2 --> M3, M4 terminals
@@ -107,10 +112,12 @@ def reboot():
 
 def led_on():
     print('I am turning on the LED')
+    GPIO.output(led_test, GPIO.HIGH)
     msg.tell("LED turned on")
 
 def led_off():
     print('I am turning off the LED')
+    GPIO.output(led_test, GPIO.LOW)
     msg.tell("LED turned off")
 
 def enable_2way():
@@ -165,7 +172,7 @@ def ignition():
     if msg.demand("Are you sure you want to start ignition? [yes/no]") == 'yes':
         msg.tell("Ignition beginning: Countdown from 10.")
         for sec in range(10):
-            msg.tell("{}".format(sec))
+            msg.tell("{}".format(10-sec))
             sleep(1)
         msg.tell("BOOM")
     else:
