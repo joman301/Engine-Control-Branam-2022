@@ -21,9 +21,12 @@ LAST_COMMAND = []
 LOX_MOTOR_POS_DEG = 0
 KER_MOTOR_POS_DEG = 0
 
-led_test = "P9_11"
-GPIO.setup(led_test, GPIO.OUT)
-GPIO.output(led_test, GPIO.LOW)
+fuel_led = "P9_11"
+lox_led = "P9_41"
+GPIO.setup(fuel_led, GPIO.OUT)
+GPIO.setup(lox_led, GPIO.OUT)
+GPIO.output(fuel_led, GPIO.LOW)
+GPIO.output(lox_led, GPIO.LOW)
 
 # stepper1 --> M1, M2 terminals
 # stepper2 --> M3, M4 terminals
@@ -154,18 +157,22 @@ def ventfuel_close():
 
 def mainlox_open():
     print("Opening the main LOX valve")
+    GPIO.output(lox_led, GPIO.HIGH)
     msg.tell("Main LOX valve opened")
 
 def mainlox_close():
     print("Closing the main LOX valve")
+    GPIO.output(lox_led, GPIO.LOW)
     msg.tell("Main LOX valve closed")
 
 def mainfuel_open():
     print("Opening the main FUEL valve")
+    GPIO.output(fuel_led, GPIO.HIGH)
     msg.tell("Main FUEL valve opened")
 
 def mainfuel_close():
     print("Closing the main FUEL valve")
+    GPIO.output(fuel_led, GPIO.LOW)
     msg.tell("Main FUEL valve closed")
 
 def ignition():
@@ -174,6 +181,8 @@ def ignition():
         for sec in range(10):
             msg.tell("{}".format(10-sec))
             sleep(1)
+        GPIO.output(fuel_led, GPIO.HIGH)
+        GPIO.output(lox_led, GPIO.HIGH)
         msg.tell("BOOM")
     else:
         msg.tell("Aborted the ignition procedure")
