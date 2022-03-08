@@ -1,9 +1,12 @@
 '''Contains most commands that the user
 can execute'''
 from enum import Enum
+
+from pygtkcompat import enable_webkit
 import message as msg
 import time
 import os
+from time import sleep
 
 #import board
 #from adafruit_motor import stepper
@@ -33,106 +36,39 @@ class Dev(Enum):
     LOX_MOTOR = 1
     KER_MOTOR = 2
 
-#Rotates specified motor by specified number of steps
-def rotate(motor, amount_deg):
-    global LOX_MOTOR_POS_DEG, KER_MOTOR_POS_DEG
-
-    motor_rotation_deg = amount_deg * GEAR_RATIO
-    deg_per_step = 1.8
-    step_count = int(motor_rotation_deg / deg_per_step)
-
-    if(abs(amount_deg) >= 90):
-        user_message = "Type \'yes\' to confirm %s degrees on device %s" % (amount_deg, Dev(motor).name)
-        if msg.demand(user_message) != 'yes':
-            msg.tell("Operation Cancelled")
-            return 4
-
-    msg.tell(("Rotating %s Motor %s degrees") % (Dev(motor).name, amount_deg))
-    msg.cmd_ready()
-'''
-    if step_count > 0:
-        dir = stepper.FORWARD
-    else:
-        dir = stepper.BACKWARD
-        step_count = step_count * -1
-        deg_per_step = deg_per_step *-1
-    
-    if motor == Dev.LOX_MOTOR:
-        for i in range(step_count):
-            if msg.is_stopped():
-                msg.tell("Stopping LOX_MOTOR at position %.2f degrees" % (LOX_MOTOR_POS_DEG/GEAR_RATIO))
-                break
-            else:
-                motors.stepper1.onestep(direction = dir, style=stepper.DOUBLE)
-                LOX_MOTOR_POS_DEG += deg_per_step
-                time.sleep(0.0001)
-        motors.stepper1.release()
-        msg.tell("Successfully set LOX_MOTOR position to %.2f degrees" % (LOX_MOTOR_POS_DEG/GEAR_RATIO))
-
-    elif motor == Dev.KER_MOTOR:
-        for i in range(step_count):
-            if msg.is_stopped():
-                msg.tell("Stopping KER_MOTOR at position %.2f degrees" % (KER_MOTOR_POS_DEG/GEAR_RATIO))
-                break
-            else:
-                motors.stepper2.onestep(direction = dir, style=stepper.DOUBLE)
-                KER_MOTOR_POS_DEG += deg_per_step
-                time.sleep(0.0001)
-        motors.stepper2.release()
-        msg.tell("Successfully set KER_MOTOR position to %.2f degrees" % (KER_MOTOR_POS_DEG/GEAR_RATIO))
-'''
-def lox_motor_pos():
-    msg.tell("LOX Motor rotated %.2f degrees" % (LOX_MOTOR_POS_DEG/GEAR_RATIO))
-
-def ker_motor_pos():
-    msg.tell("KEROSENE Motor rotated %.2f degrees" % (KER_MOTOR_POS_DEG/GEAR_RATIO))
-
-def lox_is():
-    rotate(Dev.LOX_MOTOR,10)
-
-def lox_ds():
-    rotate(Dev.LOX_MOTOR,-10)
-
-def ker_is():
-    rotate(Dev.KER_MOTOR,10)
-
-def ker_ds():
-    rotate(Dev.KER_MOTOR,-10)
-
-def lox_inc(n):
-    rotate(Dev.LOX_MOTOR,n)
-
-def lox_dec(n):
-    rotate(Dev.LOX_MOTOR,-1*n)
-
-def ker_inc(n):
-    rotate(Dev.KER_MOTOR,n)
-
-def ker_dec(n):
-    rotate(Dev.KER_MOTOR,-1*n)
 
 def help():
     s = '''
-    lox_is: runs 10 degrees forward on lox
-    lox_ds: runs 10 degrees backward on lox
-    ker_is: runs 10 degrees forward on kerosene
-    ker_ds: runs 10 degrees backward on kerosene
+    log [T/F]: Turns on/ off sensor csv data logging 
+    calibrate: Sets the y intercept of sensors to 0
 
-    lox_inc [n]: runs n degrees forward on lox
-    lox_dec [n]: runs n degrees backward on lox
-    ker_inc [n]: runs n degrees forward on kerosene
-    ker_dec [n]: runs n degrees backward on kerosene
+    ping: Returns pong if connected to server
+    help: Pulls up this help menu
+    reboot: Restarts the server
+    rr: Repeats the last command
 
-    lox_motor_pos: return angular offset of lox motor
-    ker_motor_pos: return angular offset of ker motor
+    led_on: Turns on an LED
+    led_off: Turns off the LED
 
-    log [T/F]: start or stop logging sensor data
-    calibrate: sets y-intercept of all sensors to 0
+    enable_2way: Enables the 2-way solenoids, valves can actuate
+    disable_2way: Disables the 2-way solenoids, valves can't actuate
+    
+    press: Opens the main pressurant valve
+    depress: Closes the main pressurant valve
+    
+    ventlox_open: Opens the LOX vent valve
+    ventlox_close: Closes the LOX vent valve
+    ventfuel_open: Opens the fuel vent valve
+    ventfuel_close: Closes the fuel vent valve
+    
+    mainlox_open: Opens the LOX main valve
+    mainlox_close: Closes the LOX main valve
+    mainfuel_open: Opens the FUEL main valve
+    mainfuel_close: Closes the FUEL main valve
 
-    ping: test connection
-    help: print help menu
-    rr: repeat last command
-    reboot: restart server
+    "ignition": [ignition, 1],
+    "a": [a, 1],
+    "SYS": [SYS, 1]
     '''
     msg.tell(s)
 
@@ -169,28 +105,115 @@ def reboot():
     else:
         msg.tell("aborting")
 
+def led_on():
+    print('I am turning on the LED')
+    msg.tell("LED turned on")
+
+def led_off():
+    print('I am turning off the LED')
+    msg.tell("LED turned off")
+
+def enable_2way():
+    print("2-ways are enabled")
+    msg.tell("2-way solenoids have been enabled")
+
+def disable_2way():
+    print("2-way solenoids are disabled")
+    msg.tell("2-way solenoids have been disabled")
+
+def press():
+    print("Opening the pressurant valve")
+    msg.tell("Pressurant valve opened")
+
+def depress():
+    print("Closing the pressurant valve")
+    msg.tell("Pressurant valve closed")
+
+def ventlox_open():
+    print("Opening the LOX vent valve")
+    msg.tell("LOX vent valve opened")
+
+def ventlox_close():
+    print("Closing the LOX vent valve")
+    msg.tell("LOX vent valve closed")
+
+def ventfuel_open():
+    print("Opening the fuel vent valve")
+    msg.tell("FUEL vent valve opened")
+
+def ventfuel_close():
+    print("Closing the fuel vent valve")
+    msg.tell("FUEL vent valve closed")
+
+def mainlox_open():
+    print("Opening the main LOX valve")
+    msg.tell("Main LOX valve opened")
+
+def mainlox_close():
+    print("Closing the main LOX valve")
+    msg.tell("Main LOX valve closed")
+
+def mainfuel_open():
+    print("Opening the main FUEL valve")
+    msg.tell("Main FUEL valve opened")
+
+def mainfuel_close():
+    print("Closing the main FUEL valve")
+    msg.tell("Main FUEL valve closed")
+
+def ignition():
+    if msg.demand("Are you sure you want to start ignition? [yes/no]") == 'yes':
+        msg.tell("Ignition beginning: Countdown from 10.")
+        for sec in range(10):
+            msg.tell("{}".format(sec))
+            sleep(1)
+        msg.tell("BOOM")
+    else:
+        msg.tell("Aborted the ignition procedure")
+
+def a():
+    print("ABORT")
+    msg.tell("SYSTEM ABORTED")
+
+def SYS():
+    print("Work in progress")
+    msg.tell("Work in progress")
+
+
 #dictionary of all commands, and number of args
 commands = {
-    "lox_is": [lox_is, 1],
-    "lox_ds": [lox_ds, 1],
-    "ker_is": [ker_is, 1],
-    "ker_ds": [ker_ds, 1],
-
-    "lox_inc": [lox_inc, 2],
-    "lox_dec": [lox_dec, 2],
-    "ker_inc": [ker_inc, 2],
-    "ker_dec": [ker_dec, 2],
-
-    "lox_motor_pos": [lox_motor_pos, 1],
-    "ker_motor_pos": [ker_motor_pos, 1],
-
+    
     "log": [log, 2],
     "calibrate": [calibrate, 1],
 
     "ping": [ping, 1],
     "help": [help, 1],
     "reboot": [reboot, 1],
-    "rr": [rr, 1]
+    "rr": [rr, 1],
+
+    "led_on": [led_on, 1],
+    "led_off": [led_off, 1],
+
+    "enable_2way": [enable_2way, 1],
+    "disable_2way": [disable_2way, 1],
+    
+    "press": [press, 1],
+    "depress": [depress, 1],
+    
+    "ventlox_open": [ventlox_open, 1],
+    "ventlox_close": [ventlox_close, 1],
+    "ventfuel_open": [ventfuel_open, 1],
+    "ventfuel_close": [ventfuel_close, 1],
+    
+    "mainlox_open": [mainlox_open, 1],
+    "mainlox_close": [mainlox_close, 1],
+    "mainfuel_open": [mainfuel_open, 1],
+    "mainfuel_close": [mainfuel_close, 1],
+
+    "ignition": [ignition, 1],
+    "a": [a, 1],
+    "SYS": [SYS, 1]
+
 }
 
 # Takes an array including command and arguments, and executes it
