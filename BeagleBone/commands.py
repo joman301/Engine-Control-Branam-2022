@@ -218,12 +218,25 @@ def ignition():
         for sec in range(10):
             msg.tell("{}".format(10-sec))
             sleep(1)
+        ten_percent_open()
+        sleep(2)
+        full_flow_open()
         mainfuel_open()
         mainlox_open()
-        GPIO.output(IGNITION_PIN, GPIO.HIGH)
+        ignitor_on()
         msg.tell("BOOM")
     else:
         msg.tell("Aborted the ignition procedure")
+
+def ignitor_on():
+    print("Turning the ignitor pin on")
+    GPIO.output(IGNITION_PIN, GPIO.HIGH)
+    msg.tell("Turned the ignitor pin on")
+
+def ignitor_on():
+    print("Turning the ignitor pin on")
+    GPIO.output(IGNITION_PIN, GPIO.LOW)
+    msg.tell("Turned the ignitor pin on")
 
 def reset():
     if msg.demand("Are you sure you want to reset the system? [yes/no]") == 'yes':
@@ -240,11 +253,15 @@ def SYS():
     msg.tell("Work in progress")
 
 def engine_abort():
+    print("ABORTING THE ENGINE SYSTEM")
     ten_percent_close()
     full_flow_close()
+    mainfuel_close()
+    mainlox_close()
     sleep(0.5)
     ventfuel_open()
     ventlox_open()
+    msg.tell("ABORTING THE ENGINE SYSTEM - ")
 
 def full_abort():
     print("FULLY ABORTING THE SYSTEM")
@@ -254,6 +271,7 @@ def full_abort():
     mainlox_open()
     ventfuel_open()
     ventlox_open()
+    msg.tell("FULLY ABORTING THE SYSTEM - PRESSURE VALVES CLOSED - ALL MAIN AND VENT VALVES OPENED ")
 
 def quit():
     print("Cleaning the pins of the BBB")
