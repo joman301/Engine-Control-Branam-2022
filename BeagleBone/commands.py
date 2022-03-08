@@ -213,6 +213,7 @@ def mainfuel_close():
 
 def ignition():
     if msg.demand("Are you sure you want to start ignition? [yes/no]") == 'yes':
+        
         msg.tell("Ignition beginning: Countdown from 10.")
         for sec in range(10):
             msg.tell("{}".format(10-sec))
@@ -237,6 +238,22 @@ def a():
 def SYS():
     print("Work in progress")
     msg.tell("Work in progress")
+
+def engine_abort():
+    ten_percent_close()
+    full_flow_close()
+    sleep(0.5)
+    ventfuel_open()
+    ventlox_open()
+
+def full_abort():
+    print("FULLY ABORTING THE SYSTEM")
+    ten_percent_close()
+    full_flow_close()
+    mainfuel_open()
+    mainlox_open()
+    ventfuel_open()
+    ventlox_open()
 
 def quit():
     print("Cleaning the pins of the BBB")
@@ -278,7 +295,8 @@ commands = {
 
     "ignition": [ignition, 1],
     "a": [a, 1],
-    "SYS": [SYS, 1]
+    "SYS": [SYS, 1],
+    "reset": [reset, 1]
 
 }
 
