@@ -28,6 +28,12 @@ MAINLOX_PIN = "P9_21"
 VENTFUEL_PIN = "P9_26"
 MAINFUEL_PIN = "P9_24"
 IGNITION_PIN = "P9_41"
+TENPERCENT_PIN_2WAY = "P9_11"
+FULLFLOW_PIN_2WAY = "P9_13"
+VENTLOX_PIN_2WAY = "P9_23"
+MAINLOX_PIN_2WAY = "P9_21"
+VENTFUEL_PIN_2WAY = "P9_26"
+MAINFUEL_PIN_2WAY = "P9_24"
 
 GPIO.setup(TENPERCENT_PIN, GPIO.OUT)
 GPIO.setup(FULLFLOW_PIN, GPIO.OUT)
@@ -36,6 +42,13 @@ GPIO.setup(MAINLOX_PIN, GPIO.OUT)
 GPIO.setup(VENTFUEL_PIN, GPIO.OUT)
 GPIO.setup(MAINFUEL_PIN, GPIO.OUT)
 GPIO.setup(IGNITION_PIN, GPIO.OUT)
+GPIO.setup(TENPERCENT_PIN_2WAY, GPIO.OUT)
+GPIO.setup(FULLFLOW_PIN_2WAY, GPIO.OUT)
+GPIO.setup(VENTLOX_PIN_2WAY, GPIO.OUT)
+GPIO.setup(MAINLOX_PIN_2WAY, GPIO.OUT)
+GPIO.setup(VENTFUEL_PIN_2WAY, GPIO.OUT)
+GPIO.setup(MAINFUEL_PIN_2WAY, GPIO.OUT)
+
 
 GPIO.output(TENPERCENT_PIN, GPIO.LOW)
 GPIO.output(FULLFLOW_PIN, GPIO.LOW)
@@ -44,6 +57,13 @@ GPIO.output(MAINLOX_PIN, GPIO.LOW)
 GPIO.output(VENTFUEL_PIN, GPIO.LOW)
 GPIO.output(MAINFUEL_PIN, GPIO.LOW)
 GPIO.output(IGNITION_PIN, GPIO.LOW)
+GPIO.output(TENPERCENT_PIN_2WAY, GPIO.LOW)
+GPIO.output(FULLFLOW_PIN_2WAY, GPIO.LOW)
+GPIO.output(VENTLOX_PIN_2WAY, GPIO.LOW)
+GPIO.output(MAINLOX_PIN_2WAY, GPIO.LOW)
+GPIO.output(VENTFUEL_PIN_2WAY, GPIO.LOW)
+GPIO.output(MAINFUEL_PIN_2WAY, GPIO.LOW)
+
 
 # stepper1 --> M1, M2 terminals
 # stepper2 --> M3, M4 terminals
@@ -55,12 +75,6 @@ GPIO.output(IGNITION_PIN, GPIO.LOW)
 # stepper.BACKWARD = counterclockwise, decrease pressure
 
 #motors = MotorKit(i2c=board.I2C())
-GEAR_RATIO = 100
-
-class Dev(Enum):
-    LOX_MOTOR = 1
-    KER_MOTOR = 2
-
 
 def help():
     s = '''
@@ -99,6 +113,13 @@ def help():
     "SYS": [SYS, 1]
     '''
     msg.tell(s)
+
+
+''' 
+=================================
+COMPOUND FUNCTIONS AND COMMANDS |
+=================================
+'''
 
 # Starts or stops logging data from sensors
 def log(currently_logging):
@@ -145,10 +166,22 @@ def led_off():
 
 def enable_2way():
     print("2-ways are enabled")
+    GPIO.output(TENPERCENT_PIN_2WAY, GPIO.HIGH)
+    GPIO.output(FULLFLOW_PIN_2WAY, GPIO.HIGH)
+    GPIO.output(VENTLOX_PIN_2WAY, GPIO.HIGH)
+    GPIO.output(MAINLOX_PIN_2WAY, GPIO.HIGH)
+    GPIO.output(VENTFUEL_PIN_2WAY, GPIO.HIGH)
+    GPIO.output(MAINFUEL_PIN_2WAY, GPIO.HIGH)
     msg.tell("2-way solenoids have been enabled")
 
 def disable_2way():
     print("2-way solenoids are disabled")
+    GPIO.output(TENPERCENT_PIN_2WAY, GPIO.LOW)
+    GPIO.output(FULLFLOW_PIN_2WAY, GPIO.LOW)
+    GPIO.output(VENTLOX_PIN_2WAY, GPIO.LOW)
+    GPIO.output(MAINLOX_PIN_2WAY, GPIO.LOW)
+    GPIO.output(VENTFUEL_PIN_2WAY, GPIO.LOW)
+    GPIO.output(MAINFUEL_PIN_2WAY, GPIO.LOW)
     msg.tell("2-way solenoids have been disabled")
 
 def ten_percent_open():
@@ -211,6 +244,22 @@ def mainfuel_close():
     GPIO.output(MAINFUEL_PIN, GPIO.LOW)
     msg.tell("Main FUEL valve closed")
 
+def ignitor_on():
+    print("Turning the ignitor pin on")
+    GPIO.output(IGNITION_PIN, GPIO.HIGH)
+    msg.tell("Turned the ignitor pin on")
+
+def ignitor_off():
+    print("Turning the ignitor pin on")
+    GPIO.output(IGNITION_PIN, GPIO.LOW)
+    msg.tell("Turned the ignitor pin on")
+
+''' 
+=================================
+COMPOUND FUNCTIONS AND COMMANDS |
+=================================
+'''
+
 def ignition():
     if msg.demand("Are you sure you want to start ignition? [yes/no]") == 'yes':
         
@@ -228,15 +277,7 @@ def ignition():
     else:
         msg.tell("Aborted the ignition procedure")
 
-def ignitor_on():
-    print("Turning the ignitor pin on")
-    GPIO.output(IGNITION_PIN, GPIO.HIGH)
-    msg.tell("Turned the ignitor pin on")
 
-def ignitor_off():
-    print("Turning the ignitor pin on")
-    GPIO.output(IGNITION_PIN, GPIO.LOW)
-    msg.tell("Turned the ignitor pin on")
 
 def reset():
     if msg.demand("Are you sure you want to reset the system? [yes/no]") == 'yes':
