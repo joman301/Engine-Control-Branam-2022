@@ -135,12 +135,12 @@ def log(currently_logging):
 def pt_simulation(currently_generating):
     if currently_generating == "on":    
         msg.tell("SIMULATION OPTIONS:\n1.) Linear\n2.) Exponential\n3.) Random\n(Put random character to quit)")
-        type = msg.demand("Enter the simulation type's number:")
-        msg.tell("You entered {}".format(type))
+        sim_type = msg.demand("Enter the simulation type's number:")
+        msg.tell("You entered {}".format(type(sim_type)))
         
-        '''if type != 1: # not(type == 1 or type == 2 or type == 3):
+        if not(sim_type == 1 or sim_type == 2 or sim_type == 3):
             msg.tell("Quitting the simulator")
-            return'''
+            return
          
         while True:
             try:
@@ -165,7 +165,7 @@ def pt_simulation(currently_generating):
 
         }
 
-        if type == 1:
+        if sim_type == 1:
             msg.tell("Selected linear. Please enter characteristics:")
             pt_sim_type["Type"] = "Linear"
             while True:
@@ -187,7 +187,7 @@ def pt_simulation(currently_generating):
                     continue
             return pt_sim_type
 
-        elif type == 2:
+        elif sim_type == 2:
             msg.tell("Selected exponential. Please enter characteristics.")
             while True:
                 try:
@@ -204,7 +204,7 @@ def pt_simulation(currently_generating):
                     continue
             return pt_sim_type
                
-        elif type == 3:
+        elif sim_type == 3:
             msg.tell("Selected random. Please enter characteristics.")
 
         else:
