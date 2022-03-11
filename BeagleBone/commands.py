@@ -116,9 +116,9 @@ def help():
 
 
 ''' 
-=================================
-COMPOUND FUNCTIONS AND COMMANDS |
-=================================
+======================================================================
+SINGLE FUNCTIONS AND COMMANDS (NOT INTERDEPENDENT ON OTHER COMMANDS) |
+======================================================================
 '''
 
 # Starts or stops logging data from sensors
@@ -131,6 +131,86 @@ def log(currently_logging):
         msg.tell("Stopped Logging Data")
     else:
         msg.tell("Error: Invalid Option (Enter \"True\" or \"False\")")
+
+def pt_simulation(currently_generating):
+    if currently_generating == "on":    
+        msg.tell("SIMULATION OPTIONS:\n1.) Linear\n 2.) Exponential\n 3.) Random\n(Put random character to quit)")
+        type = msg.demand("Enter the simulation type's number:")
+        if type != 1 and type != 2 and type != 3:
+            return
+         
+        while True:
+            try:
+                time_increment = int(msg.demand("Input PT update speed (in ms): "))
+                if time_increment <= 50:
+                    msg.tell("Please input integer above 50 only...") 
+                    continue 
+                break
+            except ValueError:
+                msg.tell("Please input integer above 50 only...")  
+                continue
+
+        pt_sim_type = {
+
+            "Type": "",
+            "Y Intercept": 0,
+            "Slope": 0,
+            "Exponent": 0,
+            "Upper Bound": 0,
+            "Lower Bound": 0,
+            "Update Speed": time_increment
+
+        }
+
+        if type == '1':
+            msg.tell("Selected linear. Please enter characteristics:")
+            pt_sim_type["Type"] = "Linear"
+            while True:
+                try:
+                    pt_sim_type["Y Intercept"] = int(msg.demand("Input y intercept: "))
+                    pt_sim_type["Slope"] = int(msg.demand("Input slope: "))
+                    pt_sim_type["Lower Bound"] = int(msg.demand("Input a lower bound for the simulation: "))
+                    pt_sim_type["Upper Bound"] = int(msg.demand("Input an upper bound for the simulation: "))
+                    
+                    # Might need to add something to check that equation will run within the decided bounds
+                    '''
+                    if time_increment <= 50:
+                        msg.tell("Please input integer above 50 only...") 
+                        continue 
+                    '''
+                    break
+                except ValueError:
+                    msg.tell("Please input integers only...")  
+                    continue
+            return pt_sim_type
+
+        elif type == '2':
+            msg.tell("Selected exponential. Please enter characteristics.")
+            while True:
+                try:
+                    pt_sim_type["Y Intercept"] = int(msg.demand("Input y intercept: "))
+                    pt_sim_type["Exponent"] = int(msg.demand("Input slope: "))
+                    pt_sim_type["Lower Bound"] = int(msg.demand("Input a lower bound for the simulation: "))
+                    pt_sim_type["Upper Bound"] = int(msg.demand("Input an upper bound for the simulation: "))
+                            
+                            # Might need to add something to check that equation will run within the decided bounds
+                    
+                    break
+                except ValueError:
+                    msg.tell("Please input integers only...")  
+                    continue
+            return pt_sim_type
+               
+        elif type =='3':
+            msg.tell("Selected random. Please enter characteristics.")
+
+        else:
+            msg.tell("Quitting Pressure Transducer Simulator")
+    elif currently_generating == "off":
+        msg.logging_dummy(False)
+
+
+
 
 def calibrate():
     '''calibrates all sensors by setting the y-intercept
@@ -254,10 +334,26 @@ def ignitor_off():
     GPIO.output(IGNITION_PIN, GPIO.LOW)
     msg.tell("Turned the ignitor pin on")
 
+def a():
+    print("USER ABORT")
+    msg.tell("SYSTEM ABORTED VIA USER INPUT")
+
+def SYS():
+    print("Work in progress")
+    msg.tell("Work in progress")
+
+def quit():
+    print("Cleaning the pins of the BBB")
+    GPIO.cleanup()
+    msg.tell("Cleaning all the pins")
+
+def hold():
+    print("ENTERING A HOLD STATE")
+
 ''' 
-=================================
-COMPOUND FUNCTIONS AND COMMANDS |
-=================================
+==========================================================================================
+COMPOUND FUNCTIONS AND COMMANDS (INTERDEPENDENT ON THE ABOVE SINGLE FUNCTIONS/ COMMANDS) |
+==========================================================================================
 '''
 
 def ignition():
@@ -278,7 +374,6 @@ def ignition():
         msg.tell("Aborted the ignition procedure")
 
 
-
 def reset():
     if msg.demand("Are you sure you want to reset the system? [yes/no]") == 'yes':
         print("RESETTING THE SYSTEM: CLOSING ALL VALVES - TURNING OFF IGNITOR")
@@ -292,15 +387,6 @@ def reset():
         ignitor_off()
     else:
         msg.tell("Cancelled the reset of the system")
-
-
-def a():
-    print("USER ABORT")
-    msg.tell("SYSTEM ABORTED VIA USER INPUT")
-
-def SYS():
-    print("Work in progress")
-    msg.tell("Work in progress")
 
 def engine_abort():
     print("ABORTING THE ENGINE SYSTEM")
@@ -323,10 +409,13 @@ def full_abort():
     ventlox_open()
     msg.tell("FULLY ABORTING THE SYSTEM - PRESSURE VALVES CLOSED - ALL MAIN AND VENT VALVES OPENED ")
 
-def quit():
-    print("Cleaning the pins of the BBB")
-    GPIO.cleanup()
-    msg.tell("Cleaning all the pins")
+def hold_check():
+    hold()
+
+#def pt_simulation():
+
+
+
 
 
 #dictionary of all commands, and number of args

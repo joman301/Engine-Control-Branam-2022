@@ -27,6 +27,7 @@ SEND_INFO = queue.Queue()
 # Queue of all demands from the server
 RECEIVED_LOGS = queue.Queue()
 RECEIVED_MESSAGES = queue.Queue()
+RECEIVED_DUMMYDATA = queue.Queue()
 
 # Enums for status of server
 class Status(IntEnum):
@@ -61,13 +62,15 @@ def sender():
 def receiver():
     '''Thread which processes all information received 
     from the server'''
-    global RECEIVED_LOGS, RECEIVED_MESSAGES, SERVER_STATUS
+    global RECEIVED_LOGS, RECEIVED_MESSAGES, RECEIVED_DUMMYDATA, SERVER_STATUS
     while(True):
         message = receive_socket.recv()
         message = str(message, 'UTF-8')
         a = message.find('%')
         if message[:a] == "log":
             RECEIVED_LOGS.put(message[a+1:])
+        elif message[:a] == "dummy":
+            RECEIVED_DUMMYDATA.put(message[a+1:])
         elif message[:a] == "msg":
             '''RECEIVED_MESSAGES.put(message[a+1:])'''
             print('\n' + message[a+1:])
@@ -83,6 +86,16 @@ def logger():
     global FILE_NAME
     while(True):
         data = RECEIVED_LOGS.get()
+        with open(FILE_NAME, 'a') as file:
+            file.write(data)
+            file.close()
+
+def dummy_data():
+    '''Thread which stores all the data in the RECEIVED_DUMMYDATA
+    queue as individual data points'''
+    global FILE_NAME
+    while(True):
+        data = RECEIVED_DUMMYDATA.get()
         with open(FILE_NAME, 'a') as file:
             file.write(data)
             file.close()
@@ -126,6 +139,9 @@ receive.start()
 
 log = threading.Thread(name='logger', target=logger)
 log.start()
+
+dummy = threading.Thread(name="dummy_data", target=dummy_data)
+dummy.start()
 
 req_status()
 

@@ -1,3 +1,4 @@
+from email import message
 import queue
 import threading
 from enum import IntEnum
@@ -7,7 +8,7 @@ import zmq
 
 import sensors
 
-__author__ = "Aidan Cantu"
+__author__ = "Aidan Cantu, Joshua Vondracek"
 
 # ZMQ setup
 context = zmq.Context()
@@ -38,6 +39,9 @@ SERVER_STATUS = Status.WAITING
 # to send .csv logging data
 LOGGING = threading.Event()
 LOGGING.clear()
+
+DUMMY_DATA = threading.Event()
+DUMMY_DATA.clear()
 
 # Global entity which determines whether
 # requests can be made by the server
@@ -88,6 +92,16 @@ def send_logs():
         time.sleep(0.05)
         SEND_INFO.put(message)
 
+def send_dummy_data():
+    '''thread that sends dummy data over'''
+    global SEND_INFO
+    global DUMMY_DATA
+    while(True):
+        DUMMY_DATA.wait()
+        threading.Timer(0.1, send_dummy_data).start()
+        message = 'dummy%' + sensors.dummy_data()
+        time.sleep(0.05)
+        SEND_INFO.put(message)
 
 def get_cmd():
     '''waits until user input is allowed, then sets server status
@@ -131,6 +145,15 @@ def logging(currently_logging = True):
         LOGGING.set()
     else:
         LOGGING.clear()
+
+def logging_dummy(currently_logging_dummy = True):
+    '''determines whether send_dummy_data should send
+    the data'''
+    global DUMMY_DATA
+    if currently_logging_dummy:
+        DUMMY_DATA.set()
+    else:
+        DUMMY_DATA.clear()
 
 def set_status(status):
     global SEND_INFO, SERVER_STATUS
