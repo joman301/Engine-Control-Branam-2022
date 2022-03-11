@@ -24,7 +24,7 @@ SEND_INFO = queue.Queue()
 DEMAND_REPLIES = queue.Queue(1)
 
 # Queue of all inputs called from input function
-INPUT_REPLIES = queue.Queue()
+INPUT_REPLIES = queue.Queue(1)
 
 # Queue of all commands from the host
 RECEIVED_COMMANDS = queue.Queue(1)
