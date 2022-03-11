@@ -144,7 +144,7 @@ def pt_simulation(currently_generating):
          
         while True:
             try:
-                time_increment = int(msg.demand("Input PT update speed (in ms): "))
+                time_increment = msg.demand("Input PT update speed (in ms): ")
                 if time_increment <= 50:
                     msg.tell("Please input integer above 50 only...") 
                     continue 
@@ -170,10 +170,10 @@ def pt_simulation(currently_generating):
             pt_sim_type["Type"] = "Linear"
             while True:
                 try:
-                    pt_sim_type["Y Intercept"] = int(msg.demand("Input y intercept: "))
-                    pt_sim_type["Slope"] = int(msg.demand("Input slope: "))
-                    pt_sim_type["Lower Bound"] = int(msg.demand("Input a lower bound for the simulation: "))
-                    pt_sim_type["Upper Bound"] = int(msg.demand("Input an upper bound for the simulation: "))
+                    pt_sim_type["Y Intercept"] = msg.demand("Input y intercept: ")
+                    pt_sim_type["Slope"] = msg.demand("Input slope: ")
+                    pt_sim_type["Lower Bound"] = msg.demand("Input a lower bound for the simulation: ")
+                    pt_sim_type["Upper Bound"] = msg.demand("Input an upper bound for the simulation: ")
                     
                     # Might need to add something to check that equation will run within the decided bounds
                     '''
