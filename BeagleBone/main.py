@@ -13,7 +13,7 @@ def execute():
         if len(user_command) == 0:
             msg.cmd_ready()
             continue
-        if user_command[0].lower() == "stop":
+        if user_command[0] == "stop": # if user_command[0].lower() == "stop":  (Taking out the lowercase function, this is backup)
             msg.stop()
             for x in threading.enumerate():
                 if x.getName()=="command":
