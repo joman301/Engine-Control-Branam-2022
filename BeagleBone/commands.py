@@ -1,6 +1,7 @@
 '''Contains most commands that the user
 can execute'''
 from enum import Enum
+from socket import TIPC_MEDIUM_IMPORTANCE
 
 #from pygtkcompat import enable_webkit
 import message as msg
@@ -142,7 +143,8 @@ def pt_simulation(currently_generating):
             msg.tell("Quitting the simulator")
             return
          
-        while True:
+        time_increment = msg.demand("Input PT update speed (in ms): ")
+        '''while True:
             try:
                 time_increment = msg.demand("Input PT update speed (in ms): ")
                 if time_increment <= 50:
@@ -151,7 +153,7 @@ def pt_simulation(currently_generating):
                 break
             except ValueError:
                 msg.tell("Please input integer above 50 only...")  
-                continue
+                continue'''
 
         pt_sim_type = {
 
@@ -165,7 +167,7 @@ def pt_simulation(currently_generating):
 
         }
 
-        if sim_type == "1":
+        if sim_type == 1:
             msg.tell("Selected linear. Please enter characteristics:")
             pt_sim_type["Type"] = "Linear"
             while True:

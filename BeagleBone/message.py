@@ -138,6 +138,7 @@ def demand(message):
     a = DEMAND_REPLIES.get()
     set_status(Status.WAITING)
     USER_IO_AVAILABLE.set()
+    tell("I made it to the return command")
     return a
 
 def logging(currently_logging = True):
