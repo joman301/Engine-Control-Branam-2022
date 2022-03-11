@@ -43,6 +43,8 @@ LOGGING.clear()
 DUMMY_DATA = threading.Event()
 DUMMY_DATA.clear()
 
+PT_SIM_TYPE = {}
+
 # Global entity which determines whether
 # requests can be made by the server
 USER_IO_AVAILABLE = threading.Event()
@@ -96,10 +98,11 @@ def send_dummy_data():
     '''thread that sends dummy data over'''
     global SEND_INFO
     global DUMMY_DATA
+    global PT_SIM_TYPE
     while(True):
         DUMMY_DATA.wait()
         threading.Timer(0.1, send_dummy_data).start()
-        message = 'dummy%' + sensors.dummy_data()
+        message = 'dummy%' + sensors.dummy_data(PT_SIM_TYPE)
         time.sleep(0.05)
         SEND_INFO.put(message)
 
@@ -146,12 +149,13 @@ def logging(currently_logging = True):
     else:
         LOGGING.clear()
 
-def logging_dummy(currently_logging_dummy = True):
+def logging_dummy(currently_logging_dummy = True, dict = {}):
     '''determines whether send_dummy_data should send
     the data'''
-    global DUMMY_DATA
+    global DUMMY_DATA, PT_SIM_TYPE
     if currently_logging_dummy:
         DUMMY_DATA.set()
+        PT_SIM_TYPE = dict
     else:
         DUMMY_DATA.clear()
 

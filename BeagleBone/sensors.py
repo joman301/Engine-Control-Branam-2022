@@ -92,19 +92,19 @@ def calibrate_all():
     for item in Data:
         calibrate(item)
 
-def dummy_data(dummy_type):
+def dummy_data(dummy_dict):
     '''Generating some dummy data to fill in
     for PTs'''
     csv_string = datetime.now().strftime("%H:%M:%S.%f")[:-3]
     csv_string = csv_string + ','
 
-    if dummy_type["Type"] == "Linear":
+    if dummy_dict["Type"] == "Linear":
         for x in range(3):
-            data_point = dummy_type["Slope"] * 5 + dummy_type["Y Intercept"]
+            data_point = dummy_dict["Slope"] * 5 + dummy_dict["Y Intercept"]
             csv_string = csv_string + data_point + ','
-    elif dummy_type["Type"] == "Exponential":
+    elif dummy_dict["Type"] == "Exponential":
         print("Fill in later")
-    elif dummy_type["Type"] == "Random":
+    elif dummy_dict["Type"] == "Random":
         print("Fill in later")
     else:
         print("OOOOOOOF ITS BAD IF YOU SEE THIS")

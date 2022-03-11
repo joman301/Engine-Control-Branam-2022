@@ -37,6 +37,9 @@ def main():
     logger = threading.Thread(name='logger', target=msg.send_logs)
     logger.start()
 
+    dummyyy = threading.Thread(name='dummyyy', target=msg.send_dummy_data)
+    dummyyy.start()
+
     executer = threading.Thread(name='executer', target=execute)
     executer.start()
             
