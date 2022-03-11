@@ -5,7 +5,7 @@ from datetime import datetime
 from enum import Enum
 import threading
 
-from ADCDifferentialPi import ADCDifferentialPi
+#from ADCDifferentialPi import ADCDifferentialPi
 
 __author__ = "Aidan Cantu, Joshua Vondracek"
 
@@ -19,8 +19,8 @@ ADC_ADDR_TWO = 0x6b
 ADC_BITRATE = 14
 ADC_GAIN = 8
 
-adc = ADCDifferentialPi(ADC_ADDR_ONE, ADC_ADDR_TWO, ADC_BITRATE)
-adc.set_pga(8)
+#adc = ADCDifferentialPi(ADC_ADDR_ONE, ADC_ADDR_TWO, ADC_BITRATE)
+#adc.set_pga(8)
 
 class Data(Enum):
     LOX_PSI = 1
