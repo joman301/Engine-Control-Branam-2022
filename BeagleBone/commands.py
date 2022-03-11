@@ -136,14 +136,14 @@ def log(currently_logging):
 def pt_simulation(currently_generating):
     if currently_generating == "on":    
         msg.tell("SIMULATION OPTIONS:\n1.) Linear\n2.) Exponential\n3.) Random\n(Put random character to quit)")
-        sim_type = msg.demand("Enter the simulation type's number:")
+        sim_type = msg.input("Enter the simulation type's number:")
         msg.tell("You entered {}".format(type(sim_type)))
         
         if not(sim_type == "1" or sim_type == "2" or sim_type == "3"):
             msg.tell("Quitting the simulator")
             return
          
-        time_increment = msg.demand("Input PT update speed (in ms): ")
+        time_increment = msg.input("Input PT update speed (in ms): ")
         '''while True:
             try:
                 time_increment = msg.demand("Input PT update speed (in ms): ")

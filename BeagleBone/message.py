@@ -23,6 +23,9 @@ SEND_INFO = queue.Queue()
 # Queue of all responses to demands from the server
 DEMAND_REPLIES = queue.Queue(1)
 
+# Queue of all inputs called from input function
+INPUT_REPLIES = queue.Queue()
+
 # Queue of all commands from the host
 RECEIVED_COMMANDS = queue.Queue(1)
 
@@ -139,9 +142,29 @@ def demand(message):
     set_status(Status.WAITING)
     USER_IO_AVAILABLE.set()
     tell("I made it to the return command")
-    with DEMAND_REPLIES.mutex:
-        DEMAND_REPLIES.queue.clear()
     return a
+
+def input(message):
+    '''Waits until user input is allowed, then reads and returns
+    the value'''
+    global USER_IO_AVAILABLE
+    global SERVER_STATUS
+    global INPUT_REPLIES
+
+    USER_IO_AVAILABLE.wait()
+
+    tell(message)
+    '''while INPUT_REPLIES.empty() == False:
+        INPUT_REPLIES.get()'''
+    a = DEMAND_REPLIES.get()
+
+    USER_IO_AVAILABLE.clear()
+    set_status(Status.WAITING)
+    
+    tell("I made it to the end of the command")
+    return a
+    
+
 
 def logging(currently_logging = True):
     '''determines whether send_logs should send
