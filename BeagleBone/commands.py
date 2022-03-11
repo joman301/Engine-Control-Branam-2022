@@ -136,7 +136,7 @@ def pt_simulation(currently_generating):
     if currently_generating == "on":    
         msg.tell("SIMULATION OPTIONS:\n1.) Linear\n 2.) Exponential\n 3.) Random\n(Put random character to quit)")
         type = msg.demand("Enter the simulation type's number:")
-        if not(type == 1 or type == 2 or type == 3):
+        if type != 1: # not(type == 1 or type == 2 or type == 3):
             msg.tell("Quitting the simulator")
             return
          
