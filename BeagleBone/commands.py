@@ -185,7 +185,9 @@ def pt_simulation(currently_generating):
                 except ValueError:
                     msg.tell("Please input integers only...")  
                     continue
-            return pt_sim_type
+            msg.logging_dummy(True, pt_sim_type)
+            msg.tell("Trying to start logging dummy data")
+            #return pt_sim_type
 
         elif sim_type == "2":
             msg.tell("Selected exponential. Please enter characteristics.")
