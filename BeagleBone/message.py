@@ -154,13 +154,15 @@ def input(message):
     USER_IO_AVAILABLE.wait()
 
     tell(message)
-    '''while INPUT_REPLIES.empty() == False:
-        INPUT_REPLIES.get()'''
-    a = DEMAND_REPLIES.get()
+    while INPUT_REPLIES.empty() == False:
+        INPUT_REPLIES.get()
 
     USER_IO_AVAILABLE.clear()
+    set_status(Status.DMR_READY)
+    a = INPUT_REPLIES.get()
     set_status(Status.WAITING)
-    
+    USER_IO_AVAILABLE.set()
+
     tell("I made it to the end of the command")
     return a
     
