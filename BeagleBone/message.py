@@ -139,6 +139,8 @@ def demand(message):
     set_status(Status.WAITING)
     USER_IO_AVAILABLE.set()
     tell("I made it to the return command")
+    with DEMAND_REPLIES.mutex:
+        DEMAND_REPLIES.queue.clear()
     return a
 
 def logging(currently_logging = True):
