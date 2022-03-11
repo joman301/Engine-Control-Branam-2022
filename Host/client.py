@@ -6,7 +6,7 @@ from enum import IntEnum
 import zmq
 import pandas as pd
 
-__author__ = "Aidan Cantu"
+__author__ = "Aidan Cantu, Joshua Vondracek"
 
 # ZMQ setup
 context = zmq.Context()

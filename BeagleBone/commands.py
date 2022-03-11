@@ -457,6 +457,8 @@ commands = {
     "full_abort": [full_abort, 1],
     "engine_abort": [engine_abort, 1],
 
+    "pt_simulation": [pt_simulation, 2],
+
     "a": [a, 1],
     "SYS": [SYS, 1],
     "reset": [reset, 1],
