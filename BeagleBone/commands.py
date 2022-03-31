@@ -1,6 +1,7 @@
 '''Contains most commands that the user
 can execute'''
 from enum import Enum
+from re import S
 from socket import TIPC_MEDIUM_IMPORTANCE
 
 #from pygtkcompat import enable_webkit
@@ -74,7 +75,7 @@ STATES = {
     "Data Logging": "Off", # Do we want to have a state for raw data reading - see if it's connected? 
     "PT Simulation": "Off", 
 
-    "10 per Flow Valve": "Closed",
+    "10 percent Flow Valve": "Closed",
     "Full Flow Valve": "Closed",
 
     "LOX Main Valve": "Closed",
@@ -264,6 +265,7 @@ def led_off():
     msg.tell("LED turned off")
 
 def enable_2way():
+    global STATES
     print("2-ways are enabled")
     GPIO.output(TENPERCENT_PIN_2WAY, GPIO.LOW)
     GPIO.output(FULLFLOW_PIN_2WAY, GPIO.LOW)
@@ -271,9 +273,11 @@ def enable_2way():
     GPIO.output(MAINLOX_PIN_2WAY, GPIO.LOW)
     GPIO.output(VENTFUEL_PIN_2WAY, GPIO.LOW)
     GPIO.output(MAINFUEL_PIN_2WAY, GPIO.LOW)
-    msg.tell("2-way solenoids have been enabled")
+    STATES["Two-Way Solenoids"] = "Open"
+    msg.tell("2-way solenoids have been opened")
 
 def disable_2way():
+    global STATES
     print("2-way solenoids are disabled")
     GPIO.output(TENPERCENT_PIN_2WAY, GPIO.HIGH)
     GPIO.output(FULLFLOW_PIN_2WAY, GPIO.HIGH)
@@ -281,76 +285,105 @@ def disable_2way():
     GPIO.output(MAINLOX_PIN_2WAY, GPIO.HIGH)
     GPIO.output(VENTFUEL_PIN_2WAY, GPIO.HIGH)
     GPIO.output(MAINFUEL_PIN_2WAY, GPIO.HIGH)
-    msg.tell("2-way solenoids have been disabled")
+    STATES["Two-Way Solenoids"] = "Closed"
+    msg.tell("2-way solenoids have been closed")
 
 def ten_percent_open():
+    global STATES
     print("Opening the 10 percent valve")
     GPIO.output(TENPERCENT_PIN, GPIO.LOW)
+    STATES["10 Percent Flow Valve"] = "Open"
     msg.tell("10 percent valve opened")
 
 def ten_percent_close():
+    global STATES
     print("Closing the pressurant valve")
     GPIO.output(TENPERCENT_PIN, GPIO.HIGH)
+    STATES["10 Percent Flow Valve"] = "Closed"
     msg.tell("10 percent valve closed")
 
 def full_flow_open():
+    global STATES
     print("Opening the full-flow valve")
     GPIO.output(FULLFLOW_PIN, GPIO.LOW)
+    STATES["Full Flow Valve"] = "Open"
     msg.tell("Full-flow valve opened")
 
 def full_flow_close():
+    global STATES
     print("Closing the full-flow valve")
     GPIO.output(FULLFLOW_PIN, GPIO.HIGH)
+    STATES["Full Flow Valve"] = "Closed"
     msg.tell("Full-flow valve closed")
 
 def ventlox_open():
+    global STATES
     print("Opening the LOX vent valve")
     GPIO.output(VENTLOX_PIN, GPIO.LOW)
+    STATES["LOX Vent Valve"] = "Open"
     msg.tell("LOX vent valve opened")
 
 def ventlox_close():
+    global STATES
     print("Closing the LOX vent valve")
     GPIO.output(VENTLOX_PIN, GPIO.HIGH)
+    STATES["LOX Vent Valve"] = "Closed"
     msg.tell("LOX vent valve closed")
 
 def ventfuel_open():
+    global STATES
     print("Opening the fuel vent valve")
     GPIO.output(VENTFUEL_PIN, GPIO.LOW)
+    STATES["Fuel Vent Valve"] = "Open"
     msg.tell("FUEL vent valve opened")
 
 def ventfuel_close():
+    global STATES
     print("Closing the fuel vent valve")
     GPIO.output(VENTFUEL_PIN, GPIO.HIGH)
+    STATES["Fuel Vent Valve"] = "Closed"
     msg.tell("FUEL vent valve closed")
 
 def mainlox_open():
+    global STATES
     print("Opening the main LOX valve")
     GPIO.output(MAINLOX_PIN, GPIO.LOW)
+    STATES["LOX Main Valve"] = "Open"
     msg.tell("Main LOX valve opened")
 
 def mainlox_close():
+    global STATES
     print("Closing the main LOX valve")
     GPIO.output(MAINLOX_PIN, GPIO.HIGH)
+    STATES["LOX Main Valve"] = "Closed"
     msg.tell("Main LOX valve closed")
 
 def mainfuel_open():
+    global STATES
     print("Opening the main FUEL valve")
     GPIO.output(MAINFUEL_PIN, GPIO.LOW)
+    STATES["Fuel Main Valve"] = "Open"
     msg.tell("Main FUEL valve opened")
 
 def mainfuel_close():
+    global STATES
     print("Closing the main FUEL valve")
     GPIO.output(MAINFUEL_PIN, GPIO.HIGH)
+    STATES["Fuel Main Valve"] = "Closed"
     msg.tell("Main FUEL valve closed")
 
 def ignitor_on():
+    global STATES
     print("Turning the ignitor pin on")
     GPIO.output(IGNITION_PIN, GPIO.HIGH)  # Make sure this pin is actually set to "HIGH" for on
+    STATES["Ignitor"] = "On"
     msg.tell("Turned the ignitor pin on")
 
 def ignitor_off():
+    global STATES
     print("Turning the ignitor pin on")
     GPIO.output(IGNITION_PIN, GPIO.LOW)
+    STATES["Ignitor"] = "Off"
     msg.tell("Turned the ignitor pin on")
 
 def a():
