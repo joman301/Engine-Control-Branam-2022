@@ -360,7 +360,7 @@ def a():
 def pt_check():
     print("Checking PT readings")
 
-def SYS():
+def sys():
     global STATES
     states_string = json.dumps(STATES)
     print("Printed System States")
@@ -486,7 +486,7 @@ commands = {
     "pt_simulation": [pt_simulation, 2],
 
     "a": [a, 1],
-    "SYS": [SYS, 1],
+    "sys": [sys, 1],
     "reset": [reset, 1],
     "quit": [quit, 1]
 
