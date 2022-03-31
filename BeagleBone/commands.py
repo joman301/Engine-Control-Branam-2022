@@ -51,19 +51,19 @@ GPIO.setup(VENTFUEL_PIN_2WAY, GPIO.OUT)
 GPIO.setup(MAINFUEL_PIN_2WAY, GPIO.OUT)
 
 
-GPIO.output(TENPERCENT_PIN, GPIO.LOW)
-GPIO.output(FULLFLOW_PIN, GPIO.LOW)
-GPIO.output(VENTLOX_PIN, GPIO.LOW)
-GPIO.output(MAINLOX_PIN, GPIO.LOW)
-GPIO.output(VENTFUEL_PIN, GPIO.LOW)
-GPIO.output(MAINFUEL_PIN, GPIO.LOW)
-GPIO.output(IGNITION_PIN, GPIO.LOW)
-GPIO.output(TENPERCENT_PIN_2WAY, GPIO.LOW)
-GPIO.output(FULLFLOW_PIN_2WAY, GPIO.LOW)
-GPIO.output(VENTLOX_PIN_2WAY, GPIO.LOW)
-GPIO.output(MAINLOX_PIN_2WAY, GPIO.LOW)
-GPIO.output(VENTFUEL_PIN_2WAY, GPIO.LOW)
-GPIO.output(MAINFUEL_PIN_2WAY, GPIO.LOW)
+GPIO.output(TENPERCENT_PIN, GPIO.HIGH)
+GPIO.output(FULLFLOW_PIN, GPIO.HIGH)
+GPIO.output(VENTLOX_PIN, GPIO.HIGH)
+GPIO.output(MAINLOX_PIN, GPIO.HIGH)
+GPIO.output(VENTFUEL_PIN, GPIO.HIGH)
+GPIO.output(MAINFUEL_PIN, GPIO.HIGH)
+GPIO.output(IGNITION_PIN, GPIO.HIGH)
+GPIO.output(TENPERCENT_PIN_2WAY, GPIO.HIGH)
+GPIO.output(FULLFLOW_PIN_2WAY, GPIO.HIGH)
+GPIO.output(VENTLOX_PIN_2WAY, GPIO.HIGH)
+GPIO.output(MAINLOX_PIN_2WAY, GPIO.HIGH)
+GPIO.output(VENTFUEL_PIN_2WAY, GPIO.HIGH)
+GPIO.output(MAINFUEL_PIN_2WAY, GPIO.HIGH)
 
 
 # stepper1 --> M1, M2 terminals
@@ -243,97 +243,97 @@ def reboot():
 
 def led_on():
     print('I am turning on the LED')
-    GPIO.output(led_test, GPIO.HIGH)
+    GPIO.output(led_test, GPIO.LOW)
     msg.tell("LED turned on")
 
 def led_off():
     print('I am turning off the LED')
-    GPIO.output(led_test, GPIO.LOW)
+    GPIO.output(led_test, GPIO.HIGH)
     msg.tell("LED turned off")
 
 def enable_2way():
     print("2-ways are enabled")
-    GPIO.output(TENPERCENT_PIN_2WAY, GPIO.HIGH)
-    GPIO.output(FULLFLOW_PIN_2WAY, GPIO.HIGH)
-    GPIO.output(VENTLOX_PIN_2WAY, GPIO.HIGH)
-    GPIO.output(MAINLOX_PIN_2WAY, GPIO.HIGH)
-    GPIO.output(VENTFUEL_PIN_2WAY, GPIO.HIGH)
-    GPIO.output(MAINFUEL_PIN_2WAY, GPIO.HIGH)
-    msg.tell("2-way solenoids have been enabled")
-
-def disable_2way():
-    print("2-way solenoids are disabled")
     GPIO.output(TENPERCENT_PIN_2WAY, GPIO.LOW)
     GPIO.output(FULLFLOW_PIN_2WAY, GPIO.LOW)
     GPIO.output(VENTLOX_PIN_2WAY, GPIO.LOW)
     GPIO.output(MAINLOX_PIN_2WAY, GPIO.LOW)
     GPIO.output(VENTFUEL_PIN_2WAY, GPIO.LOW)
     GPIO.output(MAINFUEL_PIN_2WAY, GPIO.LOW)
+    msg.tell("2-way solenoids have been enabled")
+
+def disable_2way():
+    print("2-way solenoids are disabled")
+    GPIO.output(TENPERCENT_PIN_2WAY, GPIO.HIGH)
+    GPIO.output(FULLFLOW_PIN_2WAY, GPIO.HIGH)
+    GPIO.output(VENTLOX_PIN_2WAY, GPIO.HIGH)
+    GPIO.output(MAINLOX_PIN_2WAY, GPIO.HIGH)
+    GPIO.output(VENTFUEL_PIN_2WAY, GPIO.HIGH)
+    GPIO.output(MAINFUEL_PIN_2WAY, GPIO.HIGH)
     msg.tell("2-way solenoids have been disabled")
 
 def ten_percent_open():
     print("Opening the 10 percent valve")
-    GPIO.output(TENPERCENT_PIN, GPIO.HIGH)
+    GPIO.output(TENPERCENT_PIN, GPIO.LOW)
     msg.tell("10 percent valve opened")
 
 def ten_percent_close():
     print("Closing the pressurant valve")
-    GPIO.output(TENPERCENT_PIN, GPIO.LOW)
+    GPIO.output(TENPERCENT_PIN, GPIO.HIGH)
     msg.tell("10 percent valve closed")
 
 def full_flow_open():
     print("Opening the full-flow valve")
-    GPIO.output(FULLFLOW_PIN, GPIO.HIGH)
+    GPIO.output(FULLFLOW_PIN, GPIO.LOW)
     msg.tell("Full-flow valve opened")
 
 def full_flow_close():
     print("Closing the full-flow valve")
-    GPIO.output(FULLFLOW_PIN, GPIO.LOW)
+    GPIO.output(FULLFLOW_PIN, GPIO.HIGH)
     msg.tell("Full-flow valve closed")
 
 def ventlox_open():
     print("Opening the LOX vent valve")
-    GPIO.output(VENTLOX_PIN, GPIO.HIGH)
+    GPIO.output(VENTLOX_PIN, GPIO.LOW)
     msg.tell("LOX vent valve opened")
 
 def ventlox_close():
     print("Closing the LOX vent valve")
-    GPIO.output(VENTLOX_PIN, GPIO.LOW)
+    GPIO.output(VENTLOX_PIN, GPIO.HIGH)
     msg.tell("LOX vent valve closed")
 
 def ventfuel_open():
     print("Opening the fuel vent valve")
-    GPIO.output(VENTFUEL_PIN, GPIO.HIGH)
+    GPIO.output(VENTFUEL_PIN, GPIO.LOW)
     msg.tell("FUEL vent valve opened")
 
 def ventfuel_close():
     print("Closing the fuel vent valve")
-    GPIO.output(VENTFUEL_PIN, GPIO.LOW)
+    GPIO.output(VENTFUEL_PIN, GPIO.HIGH)
     msg.tell("FUEL vent valve closed")
 
 def mainlox_open():
     print("Opening the main LOX valve")
-    GPIO.output(MAINLOX_PIN, GPIO.HIGH)
+    GPIO.output(MAINLOX_PIN, GPIO.LOW)
     msg.tell("Main LOX valve opened")
 
 def mainlox_close():
     print("Closing the main LOX valve")
-    GPIO.output(MAINLOX_PIN, GPIO.LOW)
+    GPIO.output(MAINLOX_PIN, GPIO.HIGH)
     msg.tell("Main LOX valve closed")
 
 def mainfuel_open():
     print("Opening the main FUEL valve")
-    GPIO.output(MAINFUEL_PIN, GPIO.HIGH)
+    GPIO.output(MAINFUEL_PIN, GPIO.LOW)
     msg.tell("Main FUEL valve opened")
 
 def mainfuel_close():
     print("Closing the main FUEL valve")
-    GPIO.output(MAINFUEL_PIN, GPIO.LOW)
+    GPIO.output(MAINFUEL_PIN, GPIO.HIGH)
     msg.tell("Main FUEL valve closed")
 
 def ignitor_on():
     print("Turning the ignitor pin on")
-    GPIO.output(IGNITION_PIN, GPIO.HIGH)
+    GPIO.output(IGNITION_PIN, GPIO.HIGH)  # Make sure this pin is actually set to "HIGH" for on
     msg.tell("Turned the ignitor pin on")
 
 def ignitor_off():
