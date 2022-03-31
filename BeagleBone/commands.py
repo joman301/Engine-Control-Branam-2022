@@ -9,6 +9,7 @@ import time
 import os
 from time import sleep
 import Adafruit_BBIO.GPIO as GPIO
+import json
 
 #import board
 #from adafruit_motor import stepper
@@ -65,17 +66,28 @@ GPIO.output(MAINLOX_PIN_2WAY, GPIO.HIGH)
 GPIO.output(VENTFUEL_PIN_2WAY, GPIO.HIGH)
 GPIO.output(MAINFUEL_PIN_2WAY, GPIO.HIGH)
 
+STATES = {
 
-# stepper1 --> M1, M2 terminals
-# stepper2 --> M3, M4 terminals
+    "Safety": "On",
+    "Two-Way Solenoids": "Closed",
 
-# 200 steps --> 360 deg; 1.8 deg per step
-# Gear ratio of 100:1
+    "Data Logging": "Off", # Do we want to have a state for raw data reading - see if it's connected? 
+    "PT Simulation": "Off", 
 
-# stepper.FORWARD = clockwise, increase presssure
-# stepper.BACKWARD = counterclockwise, decrease pressure
+    "10 per Flow Valve": "Closed",
+    "Full Flow Valve": "Closed",
 
-#motors = MotorKit(i2c=board.I2C())
+    "LOX Main Valve": "Closed",
+    "LOX Vent Valve": "Closed",
+
+    "Fuel Main Valve": "Closed",
+    "Fuel Vent Valve": "Closed",
+
+    "Ignitor": "Off",
+
+    "System Hold": "Off"
+}
+
 
 def help():
     s = '''
@@ -345,9 +357,14 @@ def a():
     print("USER ABORT")
     msg.tell("SYSTEM ABORTED VIA USER INPUT")
 
+def pt_check():
+    print("Checking PT readings")
+
 def SYS():
-    print("Work in progress")
-    msg.tell("Work in progress")
+    global STATES
+    states_string = json.dumps(STATES)
+    print("Printed System States")
+    msg.tell(states_string)
 
 def quit():
     print("Cleaning the pins of the BBB")
