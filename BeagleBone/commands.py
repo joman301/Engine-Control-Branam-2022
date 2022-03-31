@@ -363,6 +363,10 @@ def pt_check():
 def sys():
     global STATES
     states_string = json.dumps(STATES)
+    for letter in states_string:
+        if letter == ',':    
+            states_string = states_string[:1] + "\n" + states_string[1:]
+
     print("Printed System States")
     msg.tell(states_string)
 
