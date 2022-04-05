@@ -1,6 +1,7 @@
 '''Contains most commands that the user
 can execute'''
 from enum import Enum
+from optparse import Values
 from re import S
 from socket import TIPC_MEDIUM_IMPORTANCE
 
@@ -25,16 +26,16 @@ LAST_COMMAND = []
 # Setting up the output pins for the valves/ valve control
 led_test = "P9_11"
 TENPERCENT_PIN = "P9_11"
-FULLFLOW_PIN = "P9_13"
+FULLFLOW_PIN = "P9_11"  # Wired to this 04/05/2022
 VENTLOX_PIN = "P9_23"
 MAINLOX_PIN = "P9_21"
 VENTFUEL_PIN = "P9_26"
-MAINFUEL_PIN = "P9_24"
+MAINFUEL_PIN = "P9_13"  # Wired to this 04/05/2022
 IGNITION_PIN = "P9_41"
 TENPERCENT_PIN_2WAY = "P9_11"
-FULLFLOW_PIN_2WAY = "P9_13"
+FULLFLOW_PIN_2WAY = "P9_21"  # Wired 04/05/2022
 VENTLOX_PIN_2WAY = "P9_23"
-MAINLOX_PIN_2WAY = "P9_21"
+MAINLOX_PIN_2WAY = "P9_23"  # Wired 04/05/2022
 VENTFUEL_PIN_2WAY = "P9_26"
 MAINFUEL_PIN_2WAY = "P9_24"
 
@@ -68,25 +69,28 @@ GPIO.output(VENTFUEL_PIN_2WAY, GPIO.HIGH)
 GPIO.output(MAINFUEL_PIN_2WAY, GPIO.HIGH)
 
 STATES = {
+    'SYSTEM': {
+        "Safety": "On",
+        "System Hold": "Off",
 
-    "Safety": "On",
-    "Two-Way Solenoids": "Closed",
+        "Data Logging": "Off", # Do we want to have a state for raw data reading - see if it's connected? 
+        "PT Simulation": "Off" 
+    },
 
-    "Data Logging": "Off", # Do we want to have a state for raw data reading - see if it's connected? 
-    "PT Simulation": "Off", 
+    'VALVES': {
+        "Two-Way Solenoids": "Closed",
 
-    "10 percent Flow Valve": "Closed",
-    "Full Flow Valve": "Closed",
+        "10 percent Flow Valve": "Closed",
+        "Full Flow Valve": "Closed",
 
-    "LOX Main Valve": "Closed",
-    "LOX Vent Valve": "Closed",
+        "LOX Main Valve": "Closed",
+        "LOX Vent Valve": "Closed",
 
-    "Fuel Main Valve": "Closed",
-    "Fuel Vent Valve": "Closed",
+        "Fuel Main Valve": "Closed",
+        "Fuel Vent Valve": "Closed"
+    },
 
-    "Ignitor": "Off",
-
-    "System Hold": "Off"
+    "Ignitor": "Off"
 }
 
 
@@ -456,7 +460,7 @@ def engine_abort():
     sleep(0.5)
     ventfuel_open()
     ventlox_open()
-    msg.tell("ABORTING THE ENGINE SYSTEM - ")
+    msg.tell("ABORTING THE ENGINE SYSTEM - PRESSURE VALVES CLOSED - MAIN VALVES CLOSED - VENT VALVES OPENED" )
 
 def full_abort():
     print("FULLY ABORTING THE SYSTEM")
@@ -470,6 +474,15 @@ def full_abort():
 
 def hold_check():
     hold()
+
+def energy_efficient():
+    global STATES
+    print("Turning on Energy Efficient mode")
+    for key, value in STATES["VALVES"]:
+        if value == "Closed":
+            yield key
+    msg.tell("Turning on Energy Efficient Mode - Turning off unused 2-way solenoids")
+
 
 #def pt_simulation():
 
@@ -517,6 +530,7 @@ commands = {
     "engine_abort": [engine_abort, 1],
 
     "pt_simulation": [pt_simulation, 2],
+    "energy_efficient": [energy_efficient, 2],
 
     "a": [a, 1],
     "sys": [sys, 1],
