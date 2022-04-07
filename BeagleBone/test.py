@@ -6,6 +6,6 @@ ADC.setup()
 while True:
     value = ADC.read("P9_40")  # Can also use "AIN1"
     print(value)
-    value_converted = value * 1.8
+    value_converted = ((value * 2) - 1.25) / 0.005
     print(value_converted)
     sleep(0.1)
