@@ -1,18 +1,23 @@
-try:
-    import RPi.GPIO as GPIO
-except:
-    print("Error importing RPi.GPIO. You need to run this with sudo privileges!")
+# try:
+#     import RPi.GPIO as GPIO
+# except:
+#     print("Error importing RPi.GPIO. You need to run this with sudo privileges!")
 from time import sleep
+import yaml
+from classes import *
 
 
-GPIO.setmode(GPIO.BOARD)
+# GPIO.setmode(GPIO.BOARD)
 
-LED_1 = 37
-GPIO.setup(LED_1, GPIO.OUT)
+# LED_1 = 37
+# GPIO.setup(LED_1, GPIO.OUT)
 
-while True:
-    GPIO.output(LED_1, GPIO.HIGH)
-    sleep(1)
-    GPIO.output(LED_1, GPIO.LOW)
-    sleep(1)
+with open('setup.yaml', 'r') as file:
+    raw_dict = yaml.safe_load(file)
 
+valves = {}
+for list_entry in raw_dict["valves"]:
+    valve_name = list(list_entry.keys())[0].upper()
+    valves[valve_name] = Valve(valve_name, list_entry[valve_name]["pin"], list_entry[valve_name]["type"], list_entry[valve_name]["init"])
+
+print(valves)

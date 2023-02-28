@@ -1,0 +1,30 @@
+# This is where we should interface with I/O devices
+
+
+valves:
+  - main_fuel:
+      pin: 1
+      type: Ball
+      init: Closed
+
+  - main_press:
+      pin: 37
+      type: Ball
+      init: Closed
+
+  - main_lox:
+      pin: 38
+      type: Ball
+      init: Closed
+      
+  - example:
+      pin: 39
+      type: Needle
+      init: Open
+
+
+
+
+
+# sensors:
+
