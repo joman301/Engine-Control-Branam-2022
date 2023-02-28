@@ -12,6 +12,7 @@ import os
 from time import sleep
 import RPi.GPIO as GPIO
 import yaml
+import json
 
 import sensors
 

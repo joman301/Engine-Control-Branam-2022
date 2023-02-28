@@ -34,6 +34,7 @@ class Valve:
 
     
     def setup_needle(self):
+        GPIO.setup(self.pin, self.output)
         print("I will setup the needle valve!")
 
 
@@ -56,6 +57,7 @@ class Sensor:
         self.name = name
         self.pins = pins
         self.type = sensor_type
+        self.state = "Not reading"
     
 
 

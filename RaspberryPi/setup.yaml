@@ -25,10 +25,19 @@ valves:
 valve_cmds:
     - Open
     - Close
+
+
+
+sensors:
+    - lox_pt_1:
+        pins: [1,2]
+        type: Pressure Transducer
+
+    - lox_pt_2:
+        pins: [3,4]
+        type: Pressure Transducer
     
-
-
-
-
-# sensors:
+    - lox_pt_3:
+        pins: [5,6]
+        type: Pressure Transducer
 

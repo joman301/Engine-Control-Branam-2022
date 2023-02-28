@@ -24,5 +24,4 @@ for list_entry in raw_dict["valves"]:
 sensors = {}
 for list_entry in raw_dict["sensors"]:
     sensor_name = list(list_entry.keys())[0].upper()
-    sensors[sensor_name] = Valve(sensor_name, list_entry[valve_name]["pin"], list_entry[valve_name]["type"], list_entry[valve_name]["init"])
-print(valves)
+    sensors[sensor_name] = Sensor(sensor_name, list_entry[sensor_name]["pin"], list_entry[sensor_name]["type"])
