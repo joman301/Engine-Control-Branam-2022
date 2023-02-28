@@ -51,5 +51,13 @@ class Valve:
         GPIO.cleanup()
 
 
+class Sensor:
+    def __init__(self, name, pins, sensor_type):
+        self.name = name
+        self.pins = pins
+        self.type = sensor_type
+    
+
+
 if __name__ == "__main__":
     example = Valve("main_fuel", 1, "ball", "closed")

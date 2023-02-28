@@ -16,12 +16,16 @@ valves:
       pin: 38
       type: Ball
       init: Closed
-      
+
   - example:
       pin: 39
       type: Needle
       init: Open
 
+valve_cmds:
+    - Open
+    - Close
+    
 
 
 
