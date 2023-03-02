@@ -8,7 +8,7 @@ from classes import *
 from test_commands import *
 
 
-# GPIO.setmode(GPIO.BOARD)
+GPIO.setmode(GPIO.BOARD)
 
 # LED_1 = 37
 # GPIO.setup(LED_1, GPIO.OUT)

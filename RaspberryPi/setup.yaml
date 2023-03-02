@@ -3,7 +3,7 @@
 
 valves:
   - main_fuel:
-      pin: 1
+      pin: 36
       type: Ball
       init: Closed
 
@@ -18,7 +18,7 @@ valves:
       init: Closed
 
   - example:
-      pin: 39
+      pin: 40
       type: Needle
       init: Open
 
