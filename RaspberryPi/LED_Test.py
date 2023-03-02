@@ -5,7 +5,7 @@
 from time import sleep
 import yaml
 from classes import *
-from test_commands import *
+#from test_commands import *
 
 
 GPIO.setmode(GPIO.BOARD)
@@ -19,7 +19,7 @@ with open('setup.yaml', 'r') as file:
 valves = {}
 for list_entry in raw_dict["valves"]:
     valve_name = list(list_entry.keys())[0].upper()
-    valves[valve_name] = Valve(valve_name, list_entry[valve_name]["pin"], list_entry[valve_name]["type"], list_entry[valve_name]["init"])
+    valves[list_entry.keys()[0]] = Valve(valve_name, list_entry[valve_name]["pin"], list_entry[valve_name]["type"], list_entry[valve_name]["init"])
 
 sensors = {}
 for list_entry in raw_dict["sensors"]:
