@@ -15,10 +15,15 @@ GPIO.setup(LED_4, GPIO.OUT)
 
 LEDs = [LED_1, LED_2, LED_3, LED_4]
 
-while True:
+
+
+for i in range(5):
     for LED in LEDs:
         GPIO.output(LED, GPIO.HIGH)
         sleep(1)
         GPIO.output(LED, GPIO.LOW)
         sleep(1)
+
+GPIO.cleanup()
+
         
