@@ -25,7 +25,7 @@ LAST_COMMAND = []
 with open('setup.yml', 'r') as file:
     prime_service = yaml.safe_load(file)
 
-
+GPIO.setmode(GPIO.BOARD)
 
 # MAINPRESS_PIN
 
