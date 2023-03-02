@@ -5,17 +5,17 @@ valves:
   - main_fuel:
       pin: 36
       type: Ball
-      init: Closed
+      init: Close
 
   - main_press:
       pin: 37
       type: Ball
-      init: Closed
+      init: Close
 
   - main_lox:
       pin: 38
       type: Ball
-      init: Closed
+      init: Open
 
   - example:
       pin: 40

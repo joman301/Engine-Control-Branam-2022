@@ -1,4 +1,4 @@
-import RPi.GPIO
+import RPi.GPIO as GPIO
 
 class Valve:
     def __init__(self, name, pin, valve_type, initial_state):
