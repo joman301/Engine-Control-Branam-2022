@@ -70,11 +70,11 @@ def update():
     global time_increment
     try:
         sec_total += (time_increment / 1000)
-        update_time(sec_total, time_increment)  # Include this to update the global time + graph with time increments
+        #update_time(sec_total, time_increment)  # Include this to update the global time + graph with time increments
         update_graphs(p_sensors1)  # To add graph functionality, do this command, and feed the sensor array dictionary
         update_graphs(p_sensors2)
         update_graphs(p_sensors3)
-        #update_graphs(t_sensors)
+        update_graphs(t_sensors)
 
     except IndexError:
         print('Something is not indexing in the update function in main.py, please fix')
@@ -86,9 +86,9 @@ def update():
 
 # Example pressure sensor objects and characteristics - uncomment to add additional sensor objects
 p_sensors1 = {
-    'p_sensor1': Sensor('Pressurant P Sensor 1', 'Pressure', 1, 2, csv_file, data_read, time_increment),
-    #p_sensor2': Sensor('Pressure Sensor 2', 'Pressure', 1, 1, csv_file, data_read, time_increment),
-    #'p_sensor3': Sensor('Pressure Sensor 3', 'Pressure', 1, 2, csv_file, data_read, time_increment)
+    'p_sensor1': Sensor('Front Pressurant LOX', 'Pressure', 1, 0, csv_file, data_read, time_increment),
+    'p_sensor2': Sensor('Pressure Sensor 2', 'Pressure', 1, 1, csv_file, data_read, time_increment),
+    'p_sensor3': Sensor('Pressure Sensor 3', 'Pressure', 1, 2, csv_file, data_read, time_increment)
 }
 # Creating a second pressure sensor array
 p_sensors2 = {
@@ -103,13 +103,13 @@ p_sensors3 = {
     # 'p_sensor9': Sensor('Pressure Sensor 9', 'Pressure', 3, 8, csv_file, data_read, time_increment)
 }
 # Example temperature sensor objects and characteristics - uncomment to add additional sensor objects
-'''
+
 t_sensors = {
     't_sensor1': Sensor('Temperature Sensor 1', 'Temperature', 4, 0, csv_file, data_read, time_increment),
     't_sensor2': Sensor('Temperature Sensor 2', 'Temperature', 4, 1, csv_file, data_read, time_increment),
     't_sensor3': Sensor('Temperature Sensor 3', 'Temperature', 4, 2, csv_file, data_read, time_increment)
 }
-'''
+
 
 
 
@@ -123,7 +123,7 @@ timer.start(time_increment)  # Set this to the desired update speed of the GUI [
 
 # This is the command that keeps the GUI file running
 if (sys.flags.interactive != 1) or not hasattr(QtCore, 'PYQT_VERSION'):
-    QtGui.QApplication.instance().exec_()  # This command (.exec) runs the program and opens everything above
+    QApplication.instance().exec_()  # This command (.exec) runs the program and opens everything above
 
 
 '''
