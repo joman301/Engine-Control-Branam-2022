@@ -263,6 +263,4 @@ if __name__ == '__main__':
     print('This will print when this file is run directly, but this will not print if this file is being imported.')
     # test_valve = Valve('Valve 1','Shutoff', 1)
     # test_valve2 = Valve('Valve 2', 'Shutoff', 2)
-    sensor1 = Sensor(flakjfljkajklf)
-    sensor1.name = "New name"
     
