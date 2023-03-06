@@ -13,9 +13,9 @@ __author__ = "Aidan Cantu, Joshua Vondracek"
 # ZMQ setup
 context = zmq.Context()
 send_socket = context.socket(zmq.PUSH)
-send_socket.bind("tcp://10.42.0.1:5555")
+send_socket.bind("tcp://10.42.0.42:5555")  # Change this based on what the static IP assigned to the pi is
 receive_socket = context.socket(zmq.PULL)
-receive_socket.bind("tcp://10.42.0.1:5556")
+receive_socket.bind("tcp://10.42.0.42:5556")  # Change this one too
 
 # Queue of all data that will later be sent to the host
 SEND_INFO = queue.Queue()

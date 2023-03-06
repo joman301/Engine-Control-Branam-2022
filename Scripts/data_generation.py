@@ -1,7 +1,7 @@
 import random
 
 
-def generate_data(min, max, num_of_sensors, num_of_faulty_sensors, break_t_or_f):
+def generate_data(min, max, num_of_sensors, num_of_faulty_sensors):
     
     faulty_chance = 0.1  # 10% chance the sensor has a faulty reading - voltage spike or something
     data = []

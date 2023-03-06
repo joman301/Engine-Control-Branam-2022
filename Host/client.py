@@ -11,9 +11,9 @@ __author__ = "Aidan Cantu, Joshua Vondracek"
 # ZMQ setup
 context = zmq.Context()
 receive_socket = context.socket(zmq.PULL)
-receive_socket.connect("tcp://192.168.7.2:5555")
+receive_socket.connect("tcp://10.42.0.42:5555")  # Change this depending on the static IP set-up
 send_socket = context.socket(zmq.PUSH)
-send_socket.connect("tcp://192.168.7.2:5556")
+send_socket.connect("tcp://10.42.0.42:5556")  # Change this one too
 
 current_date = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
 FILE_NAME = "data/Sensor_Data" + current_date + ".csv"

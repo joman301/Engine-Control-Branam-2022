@@ -7,7 +7,6 @@ from socket import TIPC_MEDIUM_IMPORTANCE
 
 #from pygtkcompat import enable_webkit
 import message as msg
-import time
 import os
 from time import sleep
 import RPi.GPIO as GPIO
@@ -270,9 +269,6 @@ def led_test():
     sleep(0.5)
     GPIO.output(LED_4, GPIO.LOW)
     
-    
-
-
 
 def calibrate():
     '''calibrates all sensors by setting the y-intercept
