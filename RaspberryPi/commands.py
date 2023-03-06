@@ -22,10 +22,17 @@ LAST_COMMAND = []
 
 # Setting up the output pins for the valves/ valve control
 
-with open('setup.yml', 'r') as file:
-    prime_service = yaml.safe_load(file)
-
 GPIO.setmode(GPIO.BOARD)
+
+LED_1 = 36
+LED_2 = 37
+LED_3 = 35
+LED_4 = 33
+
+GPIO.setup(LED_1, GPIO.OUT)
+GPIO.setup(LED_2, GPIO.OUT)
+GPIO.setup(LED_3, GPIO.OUT)
+GPIO.setup(LED_4, GPIO.OUT)
 
 # MAINPRESS_PIN
 
@@ -239,6 +246,32 @@ def pt_simulation(currently_generating):
         msg.logging_dummy(False)
 
 
+def led_test():
+    GPIO.output(LED_1, GPIO.HIGH)
+    GPIO.output(LED_2, GPIO.HIGH)
+    GPIO.output(LED_3, GPIO.HIGH)
+    GPIO.output(LED_4, GPIO.HIGH)
+    sleep(1)
+    GPIO.output(LED_1, GPIO.LOW)
+    GPIO.output(LED_2, GPIO.LOW)
+    GPIO.output(LED_3, GPIO.LOW)
+    GPIO.output(LED_4, GPIO.LOW)
+    sleep(0.5)
+    GPIO.output(LED_1, GPIO.HIGH)
+    sleep(0.5)
+    GPIO.output(LED_1, GPIO.LOW)
+    GPIO.output(LED_2, GPIO.HIGH)
+    sleep(0.5)
+    GPIO.output(LED_2, GPIO.LOW)
+    GPIO.output(LED_3, GPIO.HIGH)
+    sleep(0.5)
+    GPIO.output(LED_3, GPIO.LOW)
+    GPIO.output(LED_4, GPIO.HIGH)
+    sleep(0.5)
+    GPIO.output(LED_4, GPIO.LOW)
+    
+    
+
 
 
 def calibrate():
@@ -273,220 +306,220 @@ def led_off():
     GPIO.output(led_test, GPIO.HIGH)
     msg.tell("LED turned off")
 
-def enable_2way():
-    global STATES
-    print("2-ways are enabled")
-    GPIO.output(TENPERCENT_PIN_2WAY, GPIO.LOW)
-    GPIO.output(FULLFLOW_PIN_2WAY, GPIO.LOW)
-    GPIO.output(VENTLOX_PIN_2WAY, GPIO.LOW)
-    GPIO.output(MAINLOX_PIN_2WAY, GPIO.LOW)
-    GPIO.output(VENTFUEL_PIN_2WAY, GPIO.LOW)
-    GPIO.output(MAINFUEL_PIN_2WAY, GPIO.LOW)
-    STATES["Two-Way Solenoids"] = "Open"
-    msg.tell("2-way solenoids have been opened")
+# def enable_2way():
+#     global STATES
+#     print("2-ways are enabled")
+#     GPIO.output(TENPERCENT_PIN_2WAY, GPIO.LOW)
+#     GPIO.output(FULLFLOW_PIN_2WAY, GPIO.LOW)
+#     GPIO.output(VENTLOX_PIN_2WAY, GPIO.LOW)
+#     GPIO.output(MAINLOX_PIN_2WAY, GPIO.LOW)
+#     GPIO.output(VENTFUEL_PIN_2WAY, GPIO.LOW)
+#     GPIO.output(MAINFUEL_PIN_2WAY, GPIO.LOW)
+#     STATES["Two-Way Solenoids"] = "Open"
+#     msg.tell("2-way solenoids have been opened")
 
-def disable_2way():
-    global STATES
-    print("2-way solenoids are disabled")
-    GPIO.output(TENPERCENT_PIN_2WAY, GPIO.HIGH)
-    GPIO.output(FULLFLOW_PIN_2WAY, GPIO.HIGH)
-    GPIO.output(VENTLOX_PIN_2WAY, GPIO.HIGH)
-    GPIO.output(MAINLOX_PIN_2WAY, GPIO.HIGH)
-    GPIO.output(VENTFUEL_PIN_2WAY, GPIO.HIGH)
-    GPIO.output(MAINFUEL_PIN_2WAY, GPIO.HIGH)
-    STATES["Two-Way Solenoids"] = "Closed"
-    msg.tell("2-way solenoids have been closed")
+# def disable_2way():
+#     global STATES
+#     print("2-way solenoids are disabled")
+#     GPIO.output(TENPERCENT_PIN_2WAY, GPIO.HIGH)
+#     GPIO.output(FULLFLOW_PIN_2WAY, GPIO.HIGH)
+#     GPIO.output(VENTLOX_PIN_2WAY, GPIO.HIGH)
+#     GPIO.output(MAINLOX_PIN_2WAY, GPIO.HIGH)
+#     GPIO.output(VENTFUEL_PIN_2WAY, GPIO.HIGH)
+#     GPIO.output(MAINFUEL_PIN_2WAY, GPIO.HIGH)
+#     STATES["Two-Way Solenoids"] = "Closed"
+#     msg.tell("2-way solenoids have been closed")
 
-def ten_percent_open():
-    global STATES
-    print("Opening the 10 percent valve")
-    GPIO.output(TENPERCENT_PIN, GPIO.LOW)
-    STATES["10 Percent Flow Valve"] = "Open"
-    msg.tell("10 percent valve opened")
+# def ten_percent_open():
+#     global STATES
+#     print("Opening the 10 percent valve")
+#     GPIO.output(TENPERCENT_PIN, GPIO.LOW)
+#     STATES["10 Percent Flow Valve"] = "Open"
+#     msg.tell("10 percent valve opened")
 
-def ten_percent_close():
-    global STATES
-    print("Closing the pressurant valve")
-    GPIO.output(TENPERCENT_PIN, GPIO.HIGH)
-    STATES["10 Percent Flow Valve"] = "Closed"
-    msg.tell("10 percent valve closed")
+# def ten_percent_close():
+#     global STATES
+#     print("Closing the pressurant valve")
+#     GPIO.output(TENPERCENT_PIN, GPIO.HIGH)
+#     STATES["10 Percent Flow Valve"] = "Closed"
+#     msg.tell("10 percent valve closed")
 
-def full_flow_open():
-    global STATES
-    print("Opening the full-flow valve")
-    GPIO.output(FULLFLOW_PIN, GPIO.LOW)
-    STATES["Full Flow Valve"] = "Open"
-    msg.tell("Full-flow valve opened")
+# def full_flow_open():
+#     global STATES
+#     print("Opening the full-flow valve")
+#     GPIO.output(FULLFLOW_PIN, GPIO.LOW)
+#     STATES["Full Flow Valve"] = "Open"
+#     msg.tell("Full-flow valve opened")
 
-def full_flow_close():
-    global STATES
-    print("Closing the full-flow valve")
-    GPIO.output(FULLFLOW_PIN, GPIO.HIGH)
-    STATES["Full Flow Valve"] = "Closed"
-    msg.tell("Full-flow valve closed")
+# def full_flow_close():
+#     global STATES
+#     print("Closing the full-flow valve")
+#     GPIO.output(FULLFLOW_PIN, GPIO.HIGH)
+#     STATES["Full Flow Valve"] = "Closed"
+#     msg.tell("Full-flow valve closed")
 
-def ventlox_open():
-    global STATES
-    print("Opening the LOX vent valve")
-    GPIO.output(VENTLOX_PIN, GPIO.LOW)
-    STATES["LOX Vent Valve"] = "Open"
-    msg.tell("LOX vent valve opened")
+# def ventlox_open():
+#     global STATES
+#     print("Opening the LOX vent valve")
+#     GPIO.output(VENTLOX_PIN, GPIO.LOW)
+#     STATES["LOX Vent Valve"] = "Open"
+#     msg.tell("LOX vent valve opened")
 
-def ventlox_close():
-    global STATES
-    print("Closing the LOX vent valve")
-    GPIO.output(VENTLOX_PIN, GPIO.HIGH)
-    STATES["LOX Vent Valve"] = "Closed"
-    msg.tell("LOX vent valve closed")
+# def ventlox_close():
+#     global STATES
+#     print("Closing the LOX vent valve")
+#     GPIO.output(VENTLOX_PIN, GPIO.HIGH)
+#     STATES["LOX Vent Valve"] = "Closed"
+#     msg.tell("LOX vent valve closed")
 
-def ventfuel_open():
-    global STATES
-    print("Opening the fuel vent valve")
-    GPIO.output(VENTFUEL_PIN, GPIO.LOW)
-    STATES["Fuel Vent Valve"] = "Open"
-    msg.tell("FUEL vent valve opened")
+# def ventfuel_open():
+#     global STATES
+#     print("Opening the fuel vent valve")
+#     GPIO.output(VENTFUEL_PIN, GPIO.LOW)
+#     STATES["Fuel Vent Valve"] = "Open"
+#     msg.tell("FUEL vent valve opened")
 
-def ventfuel_close():
-    global STATES
-    print("Closing the fuel vent valve")
-    GPIO.output(VENTFUEL_PIN, GPIO.HIGH)
-    STATES["Fuel Vent Valve"] = "Closed"
-    msg.tell("FUEL vent valve closed")
+# def ventfuel_close():
+#     global STATES
+#     print("Closing the fuel vent valve")
+#     GPIO.output(VENTFUEL_PIN, GPIO.HIGH)
+#     STATES["Fuel Vent Valve"] = "Closed"
+#     msg.tell("FUEL vent valve closed")
 
-def mainlox_open():
-    global STATES
-    print("Opening the main LOX valve")
-    GPIO.output(MAINLOX_PIN, GPIO.LOW)
-    STATES["LOX Main Valve"] = "Open"
-    msg.tell("Main LOX valve opened")
+# def mainlox_open():
+#     global STATES
+#     print("Opening the main LOX valve")
+#     GPIO.output(MAINLOX_PIN, GPIO.LOW)
+#     STATES["LOX Main Valve"] = "Open"
+#     msg.tell("Main LOX valve opened")
 
-def mainlox_close():
-    global STATES
-    print("Closing the main LOX valve")
-    GPIO.output(MAINLOX_PIN, GPIO.HIGH)
-    STATES["LOX Main Valve"] = "Closed"
-    msg.tell("Main LOX valve closed")
+# def mainlox_close():
+#     global STATES
+#     print("Closing the main LOX valve")
+#     GPIO.output(MAINLOX_PIN, GPIO.HIGH)
+#     STATES["LOX Main Valve"] = "Closed"
+#     msg.tell("Main LOX valve closed")
 
-def mainfuel_open():
-    global STATES
-    print("Opening the main FUEL valve")
-    GPIO.output(MAINFUEL_PIN, GPIO.LOW)
-    STATES["Fuel Main Valve"] = "Open"
-    msg.tell("Main FUEL valve opened")
+# def mainfuel_open():
+#     global STATES
+#     print("Opening the main FUEL valve")
+#     GPIO.output(MAINFUEL_PIN, GPIO.LOW)
+#     STATES["Fuel Main Valve"] = "Open"
+#     msg.tell("Main FUEL valve opened")
 
-def mainfuel_close():
-    global STATES
-    print("Closing the main FUEL valve")
-    GPIO.output(MAINFUEL_PIN, GPIO.HIGH)
-    STATES["Fuel Main Valve"] = "Closed"
-    msg.tell("Main FUEL valve closed")
+# def mainfuel_close():
+#     global STATES
+#     print("Closing the main FUEL valve")
+#     GPIO.output(MAINFUEL_PIN, GPIO.HIGH)
+#     STATES["Fuel Main Valve"] = "Closed"
+#     msg.tell("Main FUEL valve closed")
 
-def ignitor_on():
-    global STATES
-    print("Turning the ignitor pin on")
-    GPIO.output(IGNITION_PIN, GPIO.HIGH)  # Make sure this pin is actually set to "HIGH" for on
-    STATES["Ignitor"] = "On"
-    msg.tell("Turned the ignitor pin on")
+# def ignitor_on():
+#     global STATES
+#     print("Turning the ignitor pin on")
+#     GPIO.output(IGNITION_PIN, GPIO.HIGH)  # Make sure this pin is actually set to "HIGH" for on
+#     STATES["Ignitor"] = "On"
+#     msg.tell("Turned the ignitor pin on")
 
-def ignitor_off():
-    global STATES
-    print("Turning the ignitor pin on")
-    GPIO.output(IGNITION_PIN, GPIO.LOW)
-    STATES["Ignitor"] = "Off"
-    msg.tell("Turned the ignitor pin on")
+# def ignitor_off():
+#     global STATES
+#     print("Turning the ignitor pin on")
+#     GPIO.output(IGNITION_PIN, GPIO.LOW)
+#     STATES["Ignitor"] = "Off"
+#     msg.tell("Turned the ignitor pin on")
 
-def a():
-    print("USER ABORT")
-    msg.tell("SYSTEM ABORTED VIA USER INPUT")
+# def a():
+#     print("USER ABORT")
+#     msg.tell("SYSTEM ABORTED VIA USER INPUT")
 
-def pt_check():
-    print("Checking PT readings")
+# def pt_check():
+#     print("Checking PT readings")
 
-def sys():
-    global STATES
-    states_string = json.dumps(STATES)
-    print("Printed System States")
-    msg.tell(states_string.replace(",", "\n"))
+# def sys():
+#     global STATES
+#     states_string = json.dumps(STATES)
+#     print("Printed System States")
+#     msg.tell(states_string.replace(",", "\n"))
 
-def quit():
-    print("Cleaning the pins of the BBB")
-    print("Closing this program")
-    GPIO.cleanup()
-    os.system('exit')
-    msg.tell("Cleaning all the pins, closing the program on the BBB")
+# def quit():
+#     print("Cleaning the pins of the BBB")
+#     print("Closing this program")
+#     GPIO.cleanup()
+#     os.system('exit')
+#     msg.tell("Cleaning all the pins, closing the program on the BBB")
 
-def hold():
-    print("ENTERING A HOLD STATE")
+# def hold():
+#     print("ENTERING A HOLD STATE")
 
-''' 
-==========================================================================================
-COMPOUND FUNCTIONS AND COMMANDS (INTERDEPENDENT ON THE ABOVE SINGLE FUNCTIONS/ COMMANDS) |
-==========================================================================================
-'''
+# ''' 
+# ==========================================================================================
+# COMPOUND FUNCTIONS AND COMMANDS (INTERDEPENDENT ON THE ABOVE SINGLE FUNCTIONS/ COMMANDS) |
+# ==========================================================================================
+# '''
 
-def ignition():
-    if msg.demand("Are you sure you want to start ignition? [yes/no]") == 'yes':
+# def ignition():
+#     if msg.demand("Are you sure you want to start ignition? [yes/no]") == 'yes':
         
-        msg.tell("Ignition beginning: Countdown from 10.")
-        for sec in range(10):
-            msg.tell("{}".format(10-sec))
-            sleep(1)
-        ten_percent_open()
-        mainfuel_open()
-        mainlox_open()
-        ignitor_on()
-        sleep(2)
-        full_flow_open()
-        msg.tell("BOOM")
-    else:
-        msg.tell("Aborted the ignition procedure")
+#         msg.tell("Ignition beginning: Countdown from 10.")
+#         for sec in range(10):
+#             msg.tell("{}".format(10-sec))
+#             sleep(1)
+#         ten_percent_open()
+#         mainfuel_open()
+#         mainlox_open()
+#         ignitor_on()
+#         sleep(2)
+#         full_flow_open()
+#         msg.tell("BOOM")
+#     else:
+#         msg.tell("Aborted the ignition procedure")
 
 
-def reset():
-    if msg.demand("Are you sure you want to reset the system? [yes/no]") == 'yes':
-        print("RESETTING THE SYSTEM: CLOSING ALL VALVES - TURNING OFF IGNITOR")
-        msg.tell("RESETTING THE SYSTEM: CLOSING ALL VALVES - TURNING OFF IGNITOR")
-        ten_percent_close()
-        full_flow_close()
-        mainfuel_close()
-        mainlox_close()
-        ventfuel_close()
-        ventlox_close()
-        ignitor_off()
-    else:
-        msg.tell("Cancelled the reset of the system")
+# def reset():
+#     if msg.demand("Are you sure you want to reset the system? [yes/no]") == 'yes':
+#         print("RESETTING THE SYSTEM: CLOSING ALL VALVES - TURNING OFF IGNITOR")
+#         msg.tell("RESETTING THE SYSTEM: CLOSING ALL VALVES - TURNING OFF IGNITOR")
+#         ten_percent_close()
+#         full_flow_close()
+#         mainfuel_close()
+#         mainlox_close()
+#         ventfuel_close()
+#         ventlox_close()
+#         ignitor_off()
+#     else:
+#         msg.tell("Cancelled the reset of the system")
 
-def engine_abort():
-    print("ABORTING THE ENGINE SYSTEM")
-    ten_percent_close()
-    full_flow_close()
-    mainfuel_close()
-    mainlox_close()
-    sleep(0.5)
-    ventfuel_open()
-    ventlox_open()
-    msg.tell("ABORTING THE ENGINE SYSTEM - PRESSURE VALVES CLOSED - MAIN VALVES CLOSED - VENT VALVES OPENED" )
+# def engine_abort():
+#     print("ABORTING THE ENGINE SYSTEM")
+#     ten_percent_close()
+#     full_flow_close()
+#     mainfuel_close()
+#     mainlox_close()
+#     sleep(0.5)
+#     ventfuel_open()
+#     ventlox_open()
+#     msg.tell("ABORTING THE ENGINE SYSTEM - PRESSURE VALVES CLOSED - MAIN VALVES CLOSED - VENT VALVES OPENED" )
 
-def full_abort():
-    print("FULLY ABORTING THE SYSTEM")
-    ten_percent_close()
-    full_flow_close()
-    mainfuel_open()
-    mainlox_open()
-    ventfuel_open()
-    ventlox_open()
-    msg.tell("FULLY ABORTING THE SYSTEM - PRESSURE VALVES CLOSED - ALL MAIN AND VENT VALVES OPENED ")
+# def full_abort():
+#     print("FULLY ABORTING THE SYSTEM")
+#     ten_percent_close()
+#     full_flow_close()
+#     mainfuel_open()
+#     mainlox_open()
+#     ventfuel_open()
+#     ventlox_open()
+#     msg.tell("FULLY ABORTING THE SYSTEM - PRESSURE VALVES CLOSED - ALL MAIN AND VENT VALVES OPENED ")
 
-def hold_check():
-    hold()
+# def hold_check():
+#     hold()
 
-def energy_efficient():
-    global STATES
-    print("Turning on Energy Efficient mode")
-    for key, value in STATES["VALVES"]:
-        if value == "Closed":
-            yield key
-    msg.tell("Turning on Energy Efficient Mode - Turning off unused 2-way solenoids")
+# def energy_efficient():
+#     global STATES
+#     print("Turning on Energy Efficient mode")
+#     for key, value in STATES["VALVES"]:
+#         if value == "Closed":
+#             yield key
+#     msg.tell("Turning on Energy Efficient Mode - Turning off unused 2-way solenoids")
 
 
 #def pt_simulation():
@@ -506,40 +539,42 @@ commands = {
     "reboot": [reboot, 1],
     "rr": [rr, 1],
 
-    "led_on": [led_on, 1],
-    "led_off": [led_off, 1],
+    "led_test": [led_test, 1],
 
-    "enable_2way": [enable_2way, 1],
-    "disable_2way": [disable_2way, 1],
+    # "led_on": [led_on, 1],
+    # "led_off": [led_off, 1],
+
+    # "enable_2way": [enable_2way, 1],
+    # "disable_2way": [disable_2way, 1],
     
-    "ten_percent_open": [ten_percent_open, 1],
-    "ten_percent_close": [ten_percent_close, 1],
-    "full_flow_open": [full_flow_open, 1],
-    "full_flow_close": [full_flow_close, 1],
+    # "ten_percent_open": [ten_percent_open, 1],
+    # "ten_percent_close": [ten_percent_close, 1],
+    # "full_flow_open": [full_flow_open, 1],
+    # "full_flow_close": [full_flow_close, 1],
     
-    "ventlox_open": [ventlox_open, 1],
-    "ventlox_close": [ventlox_close, 1],
-    "ventfuel_open": [ventfuel_open, 1],
-    "ventfuel_close": [ventfuel_close, 1],
+    # "ventlox_open": [ventlox_open, 1],
+    # "ventlox_close": [ventlox_close, 1],
+    # "ventfuel_open": [ventfuel_open, 1],
+    # "ventfuel_close": [ventfuel_close, 1],
     
-    "mainlox_open": [mainlox_open, 1],
-    "mainlox_close": [mainlox_close, 1],
-    "mainfuel_open": [mainfuel_open, 1],
-    "mainfuel_close": [mainfuel_close, 1],
+    # "mainlox_open": [mainlox_open, 1],
+    # "mainlox_close": [mainlox_close, 1],
+    # "mainfuel_open": [mainfuel_open, 1],
+    # "mainfuel_close": [mainfuel_close, 1],
 
-    "ignition": [ignition, 1],
-    "ignitor_on": [ignitor_on, 1],
-    "ignitor_off": [ignitor_off, 1],
+    # "ignition": [ignition, 1],
+    # "ignitor_on": [ignitor_on, 1],
+    # "ignitor_off": [ignitor_off, 1],
 
-    "full_abort": [full_abort, 1],
-    "engine_abort": [engine_abort, 1],
+    # "full_abort": [full_abort, 1],
+    # "engine_abort": [engine_abort, 1],
 
-    "pt_simulation": [pt_simulation, 2],
-    "energy_efficient": [energy_efficient, 2],
+    # "pt_simulation": [pt_simulation, 2],
+    # "energy_efficient": [energy_efficient, 2],
 
-    "a": [a, 1],
-    "sys": [sys, 1],
-    "reset": [reset, 1],
+    # "a": [a, 1],
+    # "sys": [sys, 1],
+    # "reset": [reset, 1],
     "quit": [quit, 1]
 
 }
