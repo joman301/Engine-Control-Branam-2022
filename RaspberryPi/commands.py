@@ -25,7 +25,7 @@ GPIO.setmode(GPIO.BOARD)
 
 LED_1 = 36
 LED_2 = 37
-LED_3 = 38
+LED_3 = 31
 LED_4 = 33
 
 GPIO.setup(LED_1, GPIO.OUT)
