@@ -434,6 +434,7 @@ def sys():
     states_string.replace(",", "\n")
     states_string.replace("{", "\n")
     states_string.replace("}", "\n")
+    print(states_string)
     msg.tell(states_string)
 
 
