@@ -431,11 +431,8 @@ def sys():
     global STATES
     states_string = json.dumps(STATES)
     print("Printed System States")
-    states_string.replace(",", "\n")
-    states_string.replace("{", "\n")
-    states_string.replace("}", "\n")
-    print(states_string)
-    msg.tell(states_string)
+    sys = states_string.replace(",", "\n").replace("{", "\n").replace("}", "\n")
+    msg.tell(sys)
 
 
 # def hold():
