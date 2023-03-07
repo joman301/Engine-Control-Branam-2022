@@ -25,7 +25,7 @@ GPIO.setmode(GPIO.BOARD)
 
 LED_1 = 36
 LED_2 = 37
-LED_3 = 35
+LED_3 = 38
 LED_4 = 33
 
 GPIO.setup(LED_1, GPIO.OUT)
@@ -302,6 +302,9 @@ def led_off():
     GPIO.output(led_test, GPIO.HIGH)
     msg.tell("LED turned off")
 
+def clean_up():
+    GPIO.cleanup()
+
 # def enable_2way():
 #     global STATES
 #     print("2-ways are enabled")
@@ -453,6 +456,12 @@ def led_off():
 # ==========================================================================================
 # '''
 
+def shutdown():
+    if msg.demand("Are you sure you want to shutdown? [y/n]") == 'y':
+        clean_up()
+        msg.tell("Shutting down raspberry pi!")
+        quit()
+
 # def ignition():
 #     if msg.demand("Are you sure you want to start ignition? [yes/no]") == 'yes':
         
@@ -536,6 +545,8 @@ commands = {
     "rr": [rr, 1],
 
     "led_test": [led_test, 1],
+    "shutdown": [shutdown, 1],
+    "clean_up": [clean_up, 1]
 
     # "led_on": [led_on, 1],
     # "led_off": [led_off, 1],
@@ -571,7 +582,7 @@ commands = {
     # "a": [a, 1],
     # "sys": [sys, 1],
     # "reset": [reset, 1],
-    "quit": [quit, 1]
+    # "quit": [quit, 1]
 
 }
 
