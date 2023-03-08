@@ -27,8 +27,9 @@ GPIO.setmode(GPIO.BOARD)
 TWO_WAY_PIN = 36
 TEN_FUEL_PIN = 37
 PRESS_FUEL_PIN = 31
-MAIN_FUEL_PIN = 33
 VENT_FUEL_PIN = 29
+MAIN_FUEL_PIN = 33
+
 
 IGNITOR_PIN = 32
 
@@ -418,7 +419,7 @@ def ignitor_off():
     print("Turning the ignitor pin on")
     GPIO.output(IGNITOR_PIN, GPIO.LOW)
     STATES["Ignitor"] = "Off"
-    msg.tell("Turned the ignitor pin on")
+    msg.tell("Turned the ignitor pin off")
 
 def a():
     print("USER ABORT")
