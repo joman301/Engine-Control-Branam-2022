@@ -536,12 +536,13 @@ def reset():
     if msg.demand("Are you sure you want to reset the system? [yes/no]") == 'yes':
         print("RESETTING THE SYSTEM: CLOSING ALL VALVES - TURNING OFF IGNITOR")
         msg.tell("RESETTING THE SYSTEM: CLOSING ALL VALVES - TURNING OFF IGNITOR")
-        disable_2way()
+        enable_2way()
         fuel_ten_close()
         fuel_press_close()
         fuel_vent_close()
         fuel_main_close()
         ignitor_off()
+        disable_2way()
     else:
         msg.tell("Cancelled the reset of the system")
 
