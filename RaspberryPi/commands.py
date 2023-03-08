@@ -225,12 +225,15 @@ def pt_simulation(currently_generating):
 
 def led_test():
     GPIO.output(TWO_WAY_PIN, OPEN)
+    GPIO.output(IGNITOR_PIN, GPIO.HIGH)
     GPIO.output(TEN_FUEL_PIN, OPEN)
     GPIO.output(PRESS_FUEL_PIN, OPEN)
-    GPIO.output(MAIN_FUEL_PIN, OPEN)
     GPIO.output(VENT_FUEL_PIN, OPEN)
+    GPIO.output(MAIN_FUEL_PIN, OPEN)
+    
     sleep(1)
     GPIO.output(TWO_WAY_PIN, CLOSE)
+    GPIO.output(IGNITOR_PIN, GPIO.LOW)
     GPIO.output(TEN_FUEL_PIN, CLOSE)
     GPIO.output(PRESS_FUEL_PIN, CLOSE)
     GPIO.output(MAIN_FUEL_PIN, CLOSE)
@@ -239,6 +242,9 @@ def led_test():
     GPIO.output(TWO_WAY_PIN, OPEN)
     sleep(0.5)
     GPIO.output(TWO_WAY_PIN, CLOSE)
+    GPIO.output(IGNITOR_PIN, GPIO.HIGH)
+    sleep(0.5)
+    GPIO.output(IGNITOR_PIN, GPIO.LOW)
     GPIO.output(TEN_FUEL_PIN, OPEN)
     sleep(0.5)
     GPIO.output(TEN_FUEL_PIN, CLOSE)
