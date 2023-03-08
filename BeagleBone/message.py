@@ -141,7 +141,7 @@ def demand(message):
     a = DEMAND_REPLIES.get()
     set_status(Status.WAITING)
     USER_IO_AVAILABLE.set()
-    tell("I made it to the return command")
+    #tell("I made it to the return command")
     return a
 
 def input(message):
@@ -163,7 +163,7 @@ def input(message):
     set_status(Status.WAITING)
     USER_IO_AVAILABLE.set()
 
-    tell("I made it to the end of the command")
+    #tell("I made it to the end of the command")
     return a
     
 

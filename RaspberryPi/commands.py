@@ -476,6 +476,7 @@ def hold():
         
         if cmd.upper() == "YES":
             hold = False
+            msg.tell("Exiting the hold, moving forward")
         else:
             exe(cmd)
         
