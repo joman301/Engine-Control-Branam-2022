@@ -497,6 +497,18 @@ def shutdown():
     else:
         msg.tell("Cancelled the shutdown of the pi")
 
+def fuel_fill():
+    print("Entering 'fill fuel' state")
+    fuel_main_close()
+    fuel_press_close()
+    fuel_ten_close()
+    fuel_vent_open()
+    msg.tell("SYSTEM READY FOR FUEL FILLING - ALL FUEL VALVES CLOSED EXCEPT VENT")
+
+def fill_lox():
+    print("Entering LOX fill state")
+
+
 def ignition():
     if msg.demand("Are you sure you want to start ignition? [yes/no]") == 'yes':
         
@@ -525,14 +537,14 @@ def reset():
     else:
         msg.tell("Cancelled the reset of the system")
 
-def engine_abort():
+def engine_abort():  # Ask if we want to open the press valves to depressurize after a hold
     print("ABORTING THE ENGINE SYSTEM")
     fuel_main_close()
-    fuel_press_open()
+    fuel_press_close()
     fuel_ten_close()
     sleep(0.5)
     fuel_vent_open()
-    msg.tell("ABORTING THE ENGINE SYSTEM - PRESSURE VALVES OPENED - MAIN VALVES CLOSED - VENT VALVES OPENED" )
+    msg.tell("ABORTING THE ENGINE SYSTEM - PRESSURE VALVES CLOSED - MAIN VALVES CLOSED - VENT VALVES OPENED" )
 
 def full_abort():
     print("FULLY ABORTING THE SYSTEM")
@@ -591,6 +603,8 @@ commands = {
     # "lox_vent_close": [lox_vent_close, 1],
     # "lox_main_open": [lox_main_open, 1],
     # "lox_main_close": [lox_main_close, 1],
+
+    "fuel_fill": [fuel_fill, 1],
     
     "ignition": [ignition, 1],
     "ignitor_on": [ignitor_on, 1],
