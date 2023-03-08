@@ -226,18 +226,16 @@ def pt_simulation(currently_generating):
 def led_test():
     GPIO.output(TWO_WAY_PIN, OPEN)
     GPIO.output(IGNITOR_PIN, GPIO.HIGH)
-    GPIO.output(TEN_FUEL_PIN, OPEN)
-    GPIO.output(PRESS_FUEL_PIN, OPEN)
-    GPIO.output(VENT_FUEL_PIN, OPEN)
     GPIO.output(MAIN_FUEL_PIN, OPEN)
-    
+    GPIO.output(TEN_FUEL_PIN, OPEN)
+    GPIO.output(VENT_FUEL_PIN, OPEN)
+    GPIO.output(PRESS_FUEL_PIN, OPEN)
     sleep(1)
     GPIO.output(TWO_WAY_PIN, CLOSE)
     GPIO.output(IGNITOR_PIN, GPIO.LOW)
+    GPIO.output(MAIN_FUEL_PIN, CLOSE)
     GPIO.output(TEN_FUEL_PIN, CLOSE)
     GPIO.output(PRESS_FUEL_PIN, CLOSE)
-    GPIO.output(MAIN_FUEL_PIN, CLOSE)
-    GPIO.output(VENT_FUEL_PIN, CLOSE)
     sleep(0.5)
     GPIO.output(TWO_WAY_PIN, OPEN)
     sleep(0.5)
@@ -245,18 +243,19 @@ def led_test():
     GPIO.output(IGNITOR_PIN, GPIO.HIGH)
     sleep(0.5)
     GPIO.output(IGNITOR_PIN, GPIO.LOW)
+    GPIO.output(MAIN_FUEL_PIN, OPEN)    
+    sleep(0.5)
+    GPIO.output(MAIN_FUEL_PIN, CLOSE)
     GPIO.output(TEN_FUEL_PIN, OPEN)
     sleep(0.5)
     GPIO.output(TEN_FUEL_PIN, CLOSE)
-    GPIO.output(PRESS_FUEL_PIN, OPEN)
-    sleep(0.5)
-    GPIO.output(PRESS_FUEL_PIN, CLOSE)
     GPIO.output(VENT_FUEL_PIN, OPEN)
     sleep(0.5)
     GPIO.output(VENT_FUEL_PIN, CLOSE)
-    GPIO.output(MAIN_FUEL_PIN, OPEN)
+    GPIO.output(PRESS_FUEL_PIN, OPEN)
     sleep(0.5)
-    GPIO.output(MAIN_FUEL_PIN, CLOSE)
+    GPIO.output(PRESS_FUEL_PIN, CLOSE)
+    
     
 
 def calibrate():
@@ -312,7 +311,8 @@ def check_2way_open():
         else:
             msg.tell("Cancelled the command")
             return False
-    return True
+    else:
+        return True
 
 def fuel_ten_open():
     global STATES
@@ -522,11 +522,12 @@ def ignition():
         for sec in range(10):
             msg.tell("{}".format(10-sec))
             sleep(1)
+        fuel_press_open()
         fuel_ten_open()
-        fuel_main_open()
         ignitor_on()
         sleep(2)
-        fuel_press_open()
+        fuel_main_open()
+        
         msg.tell("BOOM")
     else:
         msg.tell("Aborted the ignition procedure")
@@ -558,6 +559,7 @@ def full_abort():
     fuel_press_close()
     fuel_main_open()
     fuel_vent_open()
+    msg.tell("FULLY ABORTING THE SYSTEM - PRESSURE VALVES CLOSED - MAIN VALVES OPENED - VENT VALVES OPENED")
 
     msg.tell("FULLY ABORTING THE SYSTEM - PRESSURE VALVES CLOSED - ALL MAIN AND VENT VALVES OPENED ")
 
