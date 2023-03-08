@@ -472,7 +472,7 @@ def hold():
     msg.tell("ENTERING A HOLD STATE")
     while hold == True:
         sys()
-        cmd = msg.demand("IN HOLD STATE - USER COMMANDS AVAILABLE - ENTER 'yes' TO LEAVE HOLD")
+        cmd = msg.input("IN HOLD STATE - USER COMMANDS AVAILABLE - ENTER 'yes' TO LEAVE HOLD")
         
         if cmd.upper() == "YES":
             hold = False
