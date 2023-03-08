@@ -518,17 +518,18 @@ def fill_lox():
 def ignition():
     if msg.demand("Are you sure you want to start ignition? [yes/no]") == 'yes':
         
-        msg.tell("Ignition beginning: Countdown from 10.")
-        for sec in range(10):
-            msg.tell("{}".format(10-sec))
-            sleep(1)
-        fuel_press_open()
-        fuel_ten_open()
-        ignitor_on()
-        sleep(2)
-        fuel_main_open()
-        
-        msg.tell("BOOM")
+        if check_2way_open():
+            msg.tell("Ignition beginning: Countdown from 10.")
+            for sec in range(10):
+                msg.tell("{}".format(10-sec))
+                sleep(1)
+            fuel_press_open()
+            fuel_ten_open()
+            ignitor_on()
+            sleep(2)
+            fuel_main_open()
+            
+            msg.tell("BOOM")
     else:
         msg.tell("Aborted the ignition procedure")
 
