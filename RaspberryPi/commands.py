@@ -316,7 +316,7 @@ def check_2way_open():
 
 def fuel_ten_open():
     global STATES
-    if check_2way_open:
+    if check_2way_open():
         print("Opening the 10 percent valve")
         GPIO.output(TEN_FUEL_PIN, OPEN)
         STATES["VALVES"]["Fuel 10 Percent Pressurant Valve"] = "Open"
@@ -325,7 +325,7 @@ def fuel_ten_open():
 
 def fuel_ten_close():
     global STATES
-    if check_2way_open:
+    if check_2way_open():
         print("Closing the 10 percent valve")
         GPIO.output(TEN_FUEL_PIN, CLOSE)
         STATES["VALVES"]["Fuel 10 Percent Pressurant Valve"] = "Closed"
@@ -333,7 +333,7 @@ def fuel_ten_close():
 
 def fuel_press_open():
     global STATES
-    if check_2way_open:
+    if check_2way_open():
         print("Opening the fuel pressurant valve")
         GPIO.output(PRESS_FUEL_PIN, OPEN)
         STATES["VALVES"]["Fuel Pressurant Valve"] = "Open"
@@ -341,7 +341,7 @@ def fuel_press_open():
 
 def fuel_press_close():
     global STATES
-    if check_2way_open:
+    if check_2way_open():
         print("Closing the fuel pressurant valve")
         GPIO.output(PRESS_FUEL_PIN, CLOSE)
         STATES["VALVES"]["Fuel Pressurant Valve"] = "Closed"
@@ -349,7 +349,7 @@ def fuel_press_close():
 
 def fuel_main_open():
     global STATES
-    if check_2way_open:
+    if check_2way_open():
         print("Opening the main fuel valve")
         GPIO.output(MAIN_FUEL_PIN, OPEN)
         STATES["VALVES"]["Fuel Main Valve"] = "Open"
@@ -357,7 +357,7 @@ def fuel_main_open():
 
 def fuel_main_close():
     global STATES
-    if check_2way_open:
+    if check_2way_open():
         print("Closing the main fuel valve")
         GPIO.output(MAIN_FUEL_PIN, CLOSE)
         STATES["VALVES"]["Fuel Main Valve"] = "Closed"
@@ -365,7 +365,7 @@ def fuel_main_close():
 
 def fuel_vent_open():
     global STATES
-    if check_2way_open:
+    if check_2way_open():
         print("Opening the fuel vent valve")
         GPIO.output(VENT_FUEL_PIN, OPEN)
         STATES["VALVES"]["Fuel Vent Valve"] = "Open"
@@ -373,7 +373,7 @@ def fuel_vent_open():
 
 def fuel_vent_close():
     global STATES
-    if check_2way_open:
+    if check_2way_open():
         print("Closing the fuel vent valve")
         GPIO.output(VENT_FUEL_PIN, CLOSE)
         STATES["VALVES"]["Fuel Vent Valve"] = "Closed"
