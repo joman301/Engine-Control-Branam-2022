@@ -4,6 +4,7 @@ from enum import Enum
 from optparse import Values
 from re import S
 from socket import TIPC_MEDIUM_IMPORTANCE
+from tabnanny import check
 
 #from pygtkcompat import enable_webkit
 import message as msg
@@ -29,7 +30,6 @@ TEN_FUEL_PIN = 37
 PRESS_FUEL_PIN = 31
 VENT_FUEL_PIN = 29
 MAIN_FUEL_PIN = 33
-
 
 IGNITOR_PIN = 32
 
@@ -292,120 +292,153 @@ def disable_2way():
     STATES["VALVES"]["Two-Way Solenoid"] = "Closed"
     msg.tell("2-way solenoid has been closed")
 
+def check_2way_open():
+    global STATES
+
+    if STATES["VALVES"]["Two-Way Solenoid"] == "Closed":
+        command = msg.demand("The two-way solenoid is currently closed. Would you like to open it? [yes/no/cancel]")
+        if command.upper() == "YES":
+            enable_2way()
+            return True
+        elif command.upper() == "NO":
+            msg.tell("Command preceded without turning on the two-way solenoid")
+            return True
+        else:
+            msg.tell("Cancelled the command")
+            return False
+    return True
+
 def fuel_ten_open():
     global STATES
-    print("Opening the 10 percent valve")
-    GPIO.output(TEN_FUEL_PIN, OPEN)
-    STATES["VALVES"]["Fuel 10 Percent Pressurant Valve"] = "Open"
-    msg.tell("10 percent valve opened")
+    if check_2way_open:
+        print("Opening the 10 percent valve")
+        GPIO.output(TEN_FUEL_PIN, OPEN)
+        STATES["VALVES"]["Fuel 10 Percent Pressurant Valve"] = "Open"
+        msg.tell("10 percent valve opened")
+
 
 def fuel_ten_close():
     global STATES
-    print("Closing the 10 percent valve")
-    GPIO.output(TEN_FUEL_PIN, CLOSE)
-    STATES["VALVES"]["Fuel 10 Percent Pressurant Valve"] = "Closed"
-    msg.tell("Fuel 10 percent valve closed")
+    if check_2way_open:
+        print("Closing the 10 percent valve")
+        GPIO.output(TEN_FUEL_PIN, CLOSE)
+        STATES["VALVES"]["Fuel 10 Percent Pressurant Valve"] = "Closed"
+        msg.tell("Fuel 10 percent valve closed")
 
 def fuel_press_open():
     global STATES
-    print("Opening the fuel pressurant valve")
-    GPIO.output(PRESS_FUEL_PIN, OPEN)
-    STATES["VALVES"]["Fuel Pressurant Valve"] = "Open"
-    msg.tell("Fuel pressurant valve opened")
+    if check_2way_open:
+        print("Opening the fuel pressurant valve")
+        GPIO.output(PRESS_FUEL_PIN, OPEN)
+        STATES["VALVES"]["Fuel Pressurant Valve"] = "Open"
+        msg.tell("Fuel pressurant valve opened")
 
 def fuel_press_close():
     global STATES
-    print("Closing the fuel pressurant valve")
-    GPIO.output(PRESS_FUEL_PIN, CLOSE)
-    STATES["VALVES"]["Fuel Pressurant Valve"] = "Closed"
-    msg.tell("Fuel pressurant valve closed")
+    if check_2way_open:
+        print("Closing the fuel pressurant valve")
+        GPIO.output(PRESS_FUEL_PIN, CLOSE)
+        STATES["VALVES"]["Fuel Pressurant Valve"] = "Closed"
+        msg.tell("Fuel pressurant valve closed")
 
 def fuel_main_open():
     global STATES
-    print("Opening the main fuel valve")
-    GPIO.output(MAIN_FUEL_PIN, OPEN)
-    STATES["VALVES"]["Fuel Main Valve"] = "Open"
-    msg.tell("Main fuel valve opened")
+    if check_2way_open:
+        print("Opening the main fuel valve")
+        GPIO.output(MAIN_FUEL_PIN, OPEN)
+        STATES["VALVES"]["Fuel Main Valve"] = "Open"
+        msg.tell("Main fuel valve opened")
 
 def fuel_main_close():
     global STATES
-    print("Closing the main fuel valve")
-    GPIO.output(MAIN_FUEL_PIN, CLOSE)
-    STATES["VALVES"]["Fuel Main Valve"] = "Closed"
-    msg.tell("Main fuel valve closed")
+    if check_2way_open:
+        print("Closing the main fuel valve")
+        GPIO.output(MAIN_FUEL_PIN, CLOSE)
+        STATES["VALVES"]["Fuel Main Valve"] = "Closed"
+        msg.tell("Main fuel valve closed")
 
 def fuel_vent_open():
     global STATES
-    print("Opening the fuel vent valve")
-    GPIO.output(VENT_FUEL_PIN, OPEN)
-    STATES["VALVES"]["Fuel Vent Valve"] = "Open"
-    msg.tell("Fuel vent valve opened")
+    if check_2way_open:
+        print("Opening the fuel vent valve")
+        GPIO.output(VENT_FUEL_PIN, OPEN)
+        STATES["VALVES"]["Fuel Vent Valve"] = "Open"
+        msg.tell("Fuel vent valve opened")
 
 def fuel_vent_close():
     global STATES
-    print("Closing the fuel vent valve")
-    GPIO.output(VENT_FUEL_PIN, CLOSE)
-    STATES["VALVES"]["Fuel Vent Valve"] = "Closed"
-    msg.tell("Fuel vent valve closed")
+    if check_2way_open:
+        print("Closing the fuel vent valve")
+        GPIO.output(VENT_FUEL_PIN, CLOSE)
+        STATES["VALVES"]["Fuel Vent Valve"] = "Closed"
+        msg.tell("Fuel vent valve closed")
 
 
 # UNCOMMENT IF ADDING LOX STUFF
 
 # def lox_ten_open():
 #     global STATES
-#     print("Opening the LOX 10 percent valve")
-#     GPIO.output(TEN_LOX_PIN, OPEN)
-#     STATES["VALVES"]["LOX 10 Percent Pressurant Valve"] = "Open"
-#     msg.tell("LOX 10 percent valve opened")
+#     if check_2way_open:
+#         print("Opening the LOX 10 percent valve")
+#         GPIO.output(TEN_LOX_PIN, OPEN)
+#         STATES["VALVES"]["LOX 10 Percent Pressurant Valve"] = "Open"
+#         msg.tell("LOX 10 percent valve opened")
 
 # def lox_ten_close():
 #     global STATES
-#     print("Closing the LOX 10 percent valve")
-#     GPIO.output(TEN_LOX_PIN, CLOSE)
-#     STATES["VALVES"]["LOX 10 Percent Pressurant Valve"] = "Closed"
-#     msg.tell("LOX 10 percent valve closed")
+#     if check_2way_open:
+#         print("Closing the LOX 10 percent valve")
+#         GPIO.output(TEN_LOX_PIN, CLOSE)
+#         STATES["VALVES"]["LOX 10 Percent Pressurant Valve"] = "Closed"
+#         msg.tell("LOX 10 percent valve closed")
 
 # def lox_press_open():
 #     global STATES
-#     print("Opening the LOX pressurant valve")
-#     GPIO.output(PRESS_LOX_PIN, OPEN)
-#     STATES["VALVES"]["LOX Pressurant Valve"] = "Open"
-#     msg.tell("LOX pressurant valve opened")
+#     if check_2way_open:
+#         print("Opening the LOX pressurant valve")
+#         GPIO.output(PRESS_LOX_PIN, OPEN)
+#         STATES["VALVES"]["LOX Pressurant Valve"] = "Open"
+#         msg.tell("LOX pressurant valve opened")
 
 # def lox_press_close():
 #     global STATES
-#     print("Closing the LOX pressurant valve")
-#     GPIO.output(PRESS_LOX_PIN, CLOSE)
-#     STATES["VALVES"]["LOX Pressurant Valve"] = "Closed"
-#     msg.tell("LOX pressurant valve closed")
+#     if check_2way_open:
+#         print("Closing the LOX pressurant valve")
+#         GPIO.output(PRESS_LOX_PIN, CLOSE)
+#         STATES["VALVES"]["LOX Pressurant Valve"] = "Closed"
+#         msg.tell("LOX pressurant valve closed")
 
 # def lox_main_open():
 #     global STATES
-#     print("Opening the main LOX valve")
-#     GPIO.output(MAIN_LOX_PIN, OPEN)
-#     STATES["VALVES"]["LOX Main Valve"] = "Open"
-#     msg.tell("Main LOX valve opened")
+#     if check_2way_open:
+#         print("Opening the main LOX valve")
+#         GPIO.output(MAIN_LOX_PIN, OPEN)
+#         STATES["VALVES"]["LOX Main Valve"] = "Open"
+#         msg.tell("Main LOX valve opened")
 
 # def lox_main_close():
 #     global STATES
-#     print("Closing the main LOX valve")
-#     GPIO.output(MAIN_LOX_PIN, CLOSE)
-#     STATES["VALVES"]["LOX Main Valve"] = "Closed"
-#     msg.tell("Main LOX valve closed")
+#     if check_2way_open:
+#         print("Closing the main LOX valve")
+#         GPIO.output(MAIN_LOX_PIN, CLOSE)
+#         STATES["VALVES"]["LOX Main Valve"] = "Closed"
+#         msg.tell("Main LOX valve closed")
 
 # def lox_vent_open():
 #     global STATES
-#     print("Opening the LOX vent valve")
-#     GPIO.output(VENT_LOX_PIN, OPEN)
-#     STATES["VALVES"]["LOX Vent Valve"] = "Open"
-#     msg.tell("LOX vent valve opened")
+#     if check_2way_open:
+#         print("Opening the LOX vent valve")
+#         GPIO.output(VENT_LOX_PIN, OPEN)
+#         STATES["VALVES"]["LOX Vent Valve"] = "Open"
+#         msg.tell("LOX vent valve opened")
 
 # def lox_vent_close():
 #     global STATES
-#     print("Closing the LOX vent valve")
-#     GPIO.output(VENT_LOX_PIN, CLOSE)
-#     STATES["VALVES"]["LOX Vent Valve"] = "Closed"
-#     msg.tell("LOX vent valve closed")
+#     if check_2way_open:
+#         print("Closing the LOX vent valve")
+#         GPIO.output(VENT_LOX_PIN, CLOSE)
+#         STATES["VALVES"]["LOX Vent Valve"] = "Closed"
+#         msg.tell("LOX vent valve closed")
 
 def ignitor_on():
     global STATES
@@ -425,9 +458,6 @@ def a():
     print("USER ABORT")
     msg.tell("SYSTEM ABORTED VIA USER INPUT")
 
-# def pt_check():
-#     print("Checking PT readings")
-
 def sys():
     global STATES
     states_string = json.dumps(STATES)
@@ -436,8 +466,19 @@ def sys():
     msg.tell(sys)
 
 
-# def hold():
-#     print("ENTERING A HOLD STATE")
+def hold():
+    print("ENTERING A HOLD STATE")
+    hold = True
+    msg.tell("ENTERING A HOLD STATE")
+    while hold == True:
+        sys()
+        cmd = msg.demand("IN HOLD STATE - USER COMMANDS AVAILABLE - ENTER 'yes' TO LEAVE HOLD")
+        
+        if cmd.upper() == "YES":
+            hold = False
+        else:
+            exe(cmd)
+        
 
 # ''' 
 # ==========================================================================================
@@ -470,7 +511,6 @@ def ignition():
         msg.tell("BOOM")
     else:
         msg.tell("Aborted the ignition procedure")
-
 
 def reset():
     if msg.demand("Are you sure you want to reset the system? [yes/no]") == 'yes':
@@ -564,7 +604,8 @@ commands = {
     "a": [a, 1],
     "sys": [sys, 1],
     "reset": [reset, 1],
-    "shutdown": [shutdown, 1]
+    "shutdown": [shutdown, 1],
+    "hold": [hold, 1]
 
 }
 
