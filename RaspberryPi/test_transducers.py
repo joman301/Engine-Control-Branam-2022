@@ -3,7 +3,7 @@ from time import sleep
 
 # A/D Differential Sensor
 ADC_ADDR_ONE = 0x68
-ADC_ADDR_TWO = 0x6b
+ADC_ADDR_TWO = 0x69
 ADC_BITRATE = 14
 ADC_GAIN = 8
 
