@@ -5,6 +5,7 @@ from optparse import Values
 from re import S
 from socket import TIPC_MEDIUM_IMPORTANCE
 from tabnanny import check
+from datetime import datetime
 
 #from pygtkcompat import enable_webkit
 import message as msg
@@ -93,31 +94,26 @@ def help():
     reboot: Restarts the server
     rr: Repeats the last command
 
-    led_on: Turns on an LED
-    led_off: Turns off the LED
-
-    enable_2way: Enables the 2-way solenoids, valves can actuate
-    disable_2way: Disables the 2-way solenoids, valves can't actuate
+    enable_2way: Enables the 2-way solenoid, valves can actuate
+    disable_2way: Disables the 2-way solenoid, valves can't actuate
     
-    ten_percent_open: Opens the 10 PERCENT FLOW valve
-    ten_percent_close: Closes the 10 PERCENT FLOW valve
-    full_flow_open: Opens the FULL FLOW valve
-    full_flow_close: Closes the FULL FLOW valve
+    fuel_press_open: Opens the FUEL PRESSURANT valve
+    fuel_press_close: Closes the FUEL PRESSURANT valve
+    fuel_vent_open: Opens the FUEL VENT valve
+    fuel_vent_close: Closes the FUEL VENT valve
 
-    
-    ventlox_open: Opens the LOX vent valve
-    ventlox_close: Closes the LOX vent valve
-    ventfuel_open: Opens the FUEL vent valve
-    ventfuel_close: Closes the FUEL vent valve
-    
-    mainlox_open: Opens the LOX main valve
-    mainlox_close: Closes the LOX main valve
-    mainfuel_open: Opens the FUEL main valve
-    mainfuel_close: Closes the FUEL main valve
+    fuel_ten_open: Opens the FUEL 10 PERCENT FLOW valve
+    fuel_ten_close: Closes the FUEL 10 PERCENT FLOW valve
+    fuel_main_open: Opens the FUEL FULL FLOW valve
+    fuel_main_close: Closes the FUEL FULL FLOW valve
 
-    "ignition": [ignition, 1],
-    "a": [a, 1],
-    "SYS": [SYS, 1]
+    fuel_fill: Prepares system to fill tanks with fuel
+    ignition: Begins the ignition procedure
+    a: Emergency abort - type this quickly and hit enter
+    sys: Updates the user on system states: what's open/closed, etc
+
+    engine_abort: Aborts through vent valves, avoids flowing through engine
+    full_abort: Opens all engine and vent valves
     '''
     msg.tell(s)
 
@@ -271,6 +267,8 @@ def rr():
         return 1
 
 def ping():
+    '''Returns "pong" to host if RPi is correctly connected/ receiving 
+    commands'''
     msg.tell("pong")
 
 def reboot():
@@ -281,9 +279,11 @@ def reboot():
         msg.tell("aborting")
 
 def clean_up():
+    '''Manually clean-up the GPIO pins on the RPi'''
     GPIO.cleanup()
 
 def enable_2way():
+    '''Opens the two-way solenoid, pressurizing the five-way solenoids'''
     global STATES
     print("Opening 2-way solenoid")
     GPIO.output(TWO_WAY_PIN, OPEN)
@@ -291,6 +291,7 @@ def enable_2way():
     msg.tell("2-way solenoid has been opened")
 
 def disable_2way():
+    '''Closes the two-way solenoids, preventing five-way solenoids from actuating'''
     global STATES
     print("Closing 2-way solenoid")
     GPIO.output(TWO_WAY_PIN, CLOSE)
@@ -298,6 +299,7 @@ def disable_2way():
     msg.tell("2-way solenoid has been closed")
 
 def check_2way_open():
+    '''Ensures that two-way solenoid is open before attempting to actuate a valve'''
     global STATES
 
     if STATES["VALVES"]["Two-Way Solenoid"] == "Closed":
@@ -315,6 +317,7 @@ def check_2way_open():
         return True
 
 def fuel_ten_open():
+    '''Opens the ten-percent pressure fuel valve'''
     global STATES
     if check_2way_open():
         print("Opening the 10 percent valve")
@@ -324,6 +327,7 @@ def fuel_ten_open():
 
 
 def fuel_ten_close():
+    '''Closes the ten-percent pressure fuel valve'''
     global STATES
     if check_2way_open():
         print("Closing the 10 percent valve")
@@ -332,6 +336,7 @@ def fuel_ten_close():
         msg.tell("Fuel 10 percent valve closed")
 
 def fuel_press_open():
+    '''Opens the pressurant valve for the fuel lines'''
     global STATES
     if check_2way_open():
         print("Opening the fuel pressurant valve")
@@ -340,6 +345,7 @@ def fuel_press_open():
         msg.tell("Fuel pressurant valve opened")
 
 def fuel_press_close():
+    '''Closes the pressurant valve for the fuel lines'''
     global STATES
     if check_2way_open():
         print("Closing the fuel pressurant valve")
@@ -348,6 +354,7 @@ def fuel_press_close():
         msg.tell("Fuel pressurant valve closed")
 
 def fuel_main_open():
+    '''Opens the main fuel release valve - full-flow'''
     global STATES
     if check_2way_open():
         print("Opening the main fuel valve")
@@ -356,6 +363,7 @@ def fuel_main_open():
         msg.tell("Main fuel valve opened")
 
 def fuel_main_close():
+    '''Closes the main fuel release valve'''
     global STATES
     if check_2way_open():
         print("Closing the main fuel valve")
@@ -364,6 +372,7 @@ def fuel_main_close():
         msg.tell("Main fuel valve closed")
 
 def fuel_vent_open():
+    '''Opens the fuel vent valve'''
     global STATES
     if check_2way_open():
         print("Opening the fuel vent valve")
@@ -372,6 +381,7 @@ def fuel_vent_open():
         msg.tell("Fuel vent valve opened")
 
 def fuel_vent_close():
+    '''Closes the fuel vent valve'''
     global STATES
     if check_2way_open():
         print("Closing the fuel vent valve")
@@ -447,6 +457,7 @@ def fuel_vent_close():
 #         msg.tell("LOX vent valve closed")
 
 def ignitor_on():
+    '''Sets the state of the ignitor GPIO pin to "HIGH" - connect to a relay'''
     global STATES
     print("Turning the ignitor pin on")
     GPIO.output(IGNITOR_PIN, GPIO.HIGH)  # Make sure this pin is actually set to "HIGH" for on
@@ -454,6 +465,7 @@ def ignitor_on():
     msg.tell("Turned the ignitor pin on")
 
 def ignitor_off():
+    '''Sets the state of the ignitor GPIO pin to "LOW"'''
     global STATES
     print("Turning the ignitor pin on")
     GPIO.output(IGNITOR_PIN, GPIO.LOW)
@@ -461,7 +473,9 @@ def ignitor_off():
     msg.tell("Turned the ignitor pin off")
 
 def a():
+    '''Emergency abort - currently runs the "full abort" command'''
     print("USER ABORT")
+    full_abort()
     msg.tell("SYSTEM ABORTED VIA USER INPUT")
 
 def sys():
@@ -485,7 +499,17 @@ def hold():
             msg.tell("Exiting the hold, moving forward")
         else:
             exe(cmd)
-        
+
+def read_sensors():
+    '''Outputs the most recent data point(s) from all sensors'''
+    out_string = "Sensor readings at "
+    out_string += datetime.now().strftime("%H:%M:%S.%f")[:-3]
+    out_string += ':\n'
+    for item in sensors.Data:
+        data_point = sensors.read(item)
+        data_point = f'{data_point:.2f}'
+        out_string += str(item) + data_point + '/n'
+    msg.tell(out_string)
 
 # ''' 
 # ==========================================================================================
@@ -569,14 +593,6 @@ def full_abort():
 # def hold_check():
 #     hold()
 
-# def energy_efficient():
-#     global STATES
-#     print("Turning on Energy Efficient mode")
-#     for key, value in STATES["VALVES"]:
-#         if value == "Closed":
-#             yield key
-#     msg.tell("Turning on Energy Efficient Mode - Turning off unused 2-way solenoids")
-
 
 #dictionary of all commands, and number of args
 commands = {
@@ -624,8 +640,9 @@ commands = {
     "full_abort": [full_abort, 1],
     "engine_abort": [engine_abort, 1],
 
+    "read_sensors": [read_sensors, 1],
+
     # "pt_simulation": [pt_simulation, 2],
-    # "energy_efficient": [energy_efficient, 2],
 
     "a": [a, 1],
     "sys": [sys, 1],
@@ -678,3 +695,8 @@ def parse(user_input):
             user_command[i] = int(item)
 
     return user_command
+
+if __name__ == "__main__":
+    print("You can only see me if you run commands.py")
+    example = engine_abort()
+    print(example)

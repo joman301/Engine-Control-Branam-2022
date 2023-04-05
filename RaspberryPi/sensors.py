@@ -5,7 +5,7 @@ from datetime import datetime
 from enum import Enum
 import threading
 
-#from ADCDifferentialPi import ADCDifferentialPi
+from ADCDifferentialPi import ADCDifferentialPi
 
 __author__ = "Aidan Cantu, Joshua Vondracek"
 
@@ -19,12 +19,12 @@ ADC_ADDR_TWO = 0x6b
 ADC_BITRATE = 14
 ADC_GAIN = 8
 
-#adc = ADCDifferentialPi(ADC_ADDR_ONE, ADC_ADDR_TWO, ADC_BITRATE)
-#adc.set_pga(8)
+adc = ADCDifferentialPi(ADC_ADDR_ONE, ADC_ADDR_TWO, ADC_BITRATE)
+adc.set_pga(8)
 
 class Data(Enum):
     LOX_PSI = 1
-    KER_PSI = 2
+    FUEL_PSI = 2
     PRES_PSI = 3
     
 class Dummy(Enum):
@@ -36,7 +36,7 @@ class Dummy(Enum):
 #First value is y-int, second is slope
 conv_linear = {
     Data.LOX_PSI: [0.0006875, 10070],
-    Data.KER_PSI: [0.0006875, 10070],
+    Data.FUEL_PSI: [0.0006875, 10070],
     Data.PRES_PSI: [0.0006875, 100700]
 }
 
@@ -69,8 +69,8 @@ def read_voltage(data):
     SENSORS_AVAILABLE.wait()
     SENSORS_AVAILABLE.clear()
     if data == Data.LOX_PSI:
-        a =  adc.read_voltage(2)
-    elif data == Data.KER_PSI:
+        a =  adc.read_voltage(2)  # Change these based on what physical connections we're using for each sensor
+    elif data == Data.FUEL_PSI:
         a = adc.read_voltage(4)
     elif data == Data.PRES_PSI:
         a = adc.read_voltage(3)
@@ -81,14 +81,14 @@ def read_voltage(data):
     
 
 def calibrate(data):
-    '''sets current value from sensor as 0'''
+    '''Sets current value from sensor as 0'''
     global conv_linear
     current_value = read(data)
     convert = conv_linear.get(data)
     conv_linear[data] = [convert[0] - current_value, convert[1]]           
 
 def calibrate_all():
-    '''calibrate all sensors'''
+    '''Calibrate all sensors'''
     for item in Data:
         calibrate(item)
 
