@@ -20,7 +20,7 @@ ADC_BITRATE = 14
 ADC_GAIN = 8
 
 adc = ADCDifferentialPi(ADC_ADDR_ONE, ADC_ADDR_TWO, ADC_BITRATE)
-adc.set_pga(8)
+adc.set_pga(ADC_GAIN)
 
 class Data(Enum):
     LOX_PSI = 1
