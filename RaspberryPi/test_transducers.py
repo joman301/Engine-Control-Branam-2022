@@ -10,6 +10,7 @@ ADC_GAIN = 8
 adc = ADCDifferentialPi(ADC_ADDR_ONE, ADC_ADDR_TWO, ADC_BITRATE)
 adc.set_pga(ADC_GAIN)
 
+sleep(1)
 while True:
     print(adc.read_voltage(1))
     sleep(0.1)
